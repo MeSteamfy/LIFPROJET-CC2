@@ -1,0 +1,45 @@
+.navConteneur {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(10px);
+    gap: 2em;
+    height: 70px;
+}
+
+.navConteneur .image {
+    width: 60px;
+    margin-left: 2em;
+    cursor: pointer;
+    transition: filter 0.3s;
+}
+
+.navConteneur .image:hover {
+    filter: drop-shadow(0 0 5px black);
+}
+
+.navConteneur .conteneurCote {
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 20px;
+}
+
+.navConteneur .conteneurCote .info {
+    font-weight: bold;
+    color: white;
+    font-size: 1.75em;
+    padding: 0;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.navConteneur .conteneurCote .info:hover {
+    color: rgb(143, 242, 116);
+}
