@@ -3,7 +3,8 @@ import styles from "./Main.module.css"
 
 function Main() {
     const inputValeurRef = useRef(null);
-    const valRandomPlaceholder = ["Sulfura", "Meloetta", "Tortank", "Marisson", "Spiritomb", "Golemastoc", "Alakazam", "Laggron"];
+    const valRandomPlaceholder = ["Flareon", "Lugia", "Sylveon", "Dragapult", "Noivern", "Espeon", "Raging Bolt", "Iron Valiant", "Heatran", "Sylveon", "Dusknoir"];
+    const randomImageIndex = Math.floor(Math.random()*valRandomPlaceholder.length);
 
     function testIcon() {
         if (inputValeurRef.current && inputValeurRef.current.value.length > 0) {
@@ -20,7 +21,7 @@ function Main() {
                 <div className={styles.gauche}>
                     <h1 className="titre">PoketchAPI</h1>
                     <div className={styles.inputConteneur}>
-                        <input type="text" ref={inputValeurRef} className={styles.input} placeholder={`${valRandomPlaceholder[Math.floor(Math.random()*valRandomPlaceholder.length)]}...`} />
+                        <input type="text" ref={inputValeurRef} className={styles.input} placeholder={`${valRandomPlaceholder[randomImageIndex]}...`} />
                         <i onClick={testIcon} className={`fa-solid fa-magnifying-glass ${styles.icon}`} />
                     </div>
                     <p className={styles.info}>
@@ -28,7 +29,7 @@ function Main() {
                     </p>
                 </div>
                 
-                <img src={`/${Math.ceil(Math.random()*2)}.jpg`} className={styles.image} />
+                <img src={`/${randomImageIndex +1}.png`} className={styles.image} />
             </div>
             
 

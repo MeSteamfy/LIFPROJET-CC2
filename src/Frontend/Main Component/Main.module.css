@@ -18,12 +18,12 @@
     background-color: rgb(50, 72, 131);
     margin: 0;
     padding: 0;
+    gap: 2em;
 }
 
 .mainConteneur .description {
     margin: 0;
     margin-top: 3em;
-    margin-bottom: -2em;
     font-size: 3em;
     text-align: center;
     color: white;
@@ -39,7 +39,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100%;
+    width: 70%;
 }
 
 .mainConteneur .gauche {
@@ -74,7 +74,6 @@
     color: rgb(49, 192, 49);
 }
 
-
 .mainConteneur .gauche .inputConteneur .input {
     width: 100%;
     font-size: 1.2em;
@@ -91,11 +90,9 @@
     color: rgb(202, 202, 202)
 }
 
-.mainConteneur .image {
-    width: 500px;
-    height: auto;
+.mainConteneur img {
+    width: 300px;
     filter: drop-shadow(0 0 10px white);
     opacity: 0;
     animation: apparition 0.3s both;
-    margin: 0;
 }
