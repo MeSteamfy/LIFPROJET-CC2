@@ -11,6 +11,7 @@ function App() {
       <Main />
       <Transition styles="mainJson" />
       <JSONSection />
+      <Transition styles="jsonFooter" />
     </>
   )
 }
