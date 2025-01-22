@@ -71,7 +71,7 @@
     justify-content: center;
     align-items: center;
     width: 100%;
-    gap: 2em;
+    gap: 9em;
 }
 
 .mainConteneur .gauche {
@@ -131,7 +131,7 @@
 
 @media only screen and (max-width: 965px) {
     .bas {
-        gap: 1em;
+        gap: 1em !important;
     }
 
     .gauche {
