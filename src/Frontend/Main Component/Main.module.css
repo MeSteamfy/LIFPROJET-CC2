@@ -121,7 +121,7 @@
     color: rgb(202, 202, 202)
 }
 
-.mainConteneur img {
+.mainConteneur .image {
     width: 300px;
     filter: drop-shadow(0 0 10px white);
     opacity: 0;

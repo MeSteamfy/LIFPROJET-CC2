@@ -1,0 +1,68 @@
+.jsonConteneur {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: rgb(60, 100, 152);
+}
+
+.jsonConteneur .description {
+    margin: 0;
+    margin-top: 2em;
+    margin-bottom: 1em;
+    font-size: 3em;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    width: 80%;
+}
+
+.jsonConteneur .span {
+    color: rgb(255, 82, 82);
+    text-align: center;
+}
+
+.jsonConteneur .bas {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20em;
+    margin-bottom: 3em;
+}
+
+/*
+.jsonConteneur .bas .image {
+    
+}
+*/
+
+.jsonConteneur .bas .code {
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(17, 40, 70);
+    color: white;
+    border-radius: 10px;
+    font-size: 1.5em;
+    padding: 1em 2em;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.jsonConteneur .bas .code .line {
+    width: 100%;
+    font-weight: 700;
+}
+
+.jsonConteneur .bas .code .tab {
+    margin-left: 1em;
+}
+
+.jsonConteneur .bas .code .margin {
+    margin-left: 2em;
+}
+
+.jsonConteneur .bas .code .predict {
+    color: rgb(52, 225, 52);
+}
