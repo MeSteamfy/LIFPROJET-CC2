@@ -19,7 +19,7 @@ function Main() {
             </p>
             <div className={styles.bas}>
                 <div className={styles.gauche}>
-                    <h1 className="titre">PoketchAPI</h1>
+                    <h1 className={styles.titre}>PoketchAPI</h1>
                     <div className={styles.inputConteneur}>
                         <input type="text" ref={inputValeurRef} className={styles.input} placeholder={`${valRandomPlaceholder[randomImageIndex]}...`} />
                         <i onClick={testIcon} className={`fa-solid fa-magnifying-glass ${styles.icon}`} />

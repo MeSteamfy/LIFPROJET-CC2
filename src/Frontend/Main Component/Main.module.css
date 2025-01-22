@@ -8,6 +8,32 @@
     }
 }
 
+@keyframes goDroite {
+	from {
+		opacity: 0;
+		transform: translateX(-5%);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+.titre {
+	opacity: 0;
+	font-family: "Libre Franklin", serif;
+	font-optical-sizing: auto;
+	font-weight: bold;
+	font-style: normal;
+	font-size: 5rem;
+	margin: 0;
+	margin-top: -2em;
+	color: white;
+	text-shadow: 0 5px 3px gray;
+	animation: goDroite 0.8s ease-in-out both;
+}
+
 .mainConteneur {
     width: 100%;
     height: 100%;
@@ -23,12 +49,17 @@
 
 .mainConteneur .description {
     margin: 0;
-    margin-top: 3em;
+    margin-top: 2em;
+    margin-bottom: 1em;
     font-size: 3em;
     text-align: center;
     color: white;
     font-weight: bold;
     width: 80%;
+}
+
+.mainConteneur .info {
+    text-align: center;
 }
 
 .mainConteneur .span {
@@ -39,12 +70,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 70%;
+    width: 100%;
+    gap: 2em;
 }
 
 .mainConteneur .gauche {
-    width: 100%;
     display: flex;
+    justify-content: center;
     align-items: center;
     flex-direction: column;
     color: white;
@@ -81,7 +113,6 @@
     background-color: transparent;
     resize: none;
     outline: none;
-    margin: 0;
     color: white;
     font-weight: bold;
 }
@@ -95,4 +126,48 @@
     filter: drop-shadow(0 0 10px white);
     opacity: 0;
     animation: apparition 0.3s both;
+    margin-bottom: 2em;
+}
+
+@media only screen and (max-width: 965px) {
+    .bas {
+        gap: 1em;
+    }
+
+    .gauche {
+        max-width: 50%;
+    }
+
+    .titre {
+        font-size: 3rem;
+    }
+
+    .inputConteneur {
+        padding: 1rem !important;
+    }
+
+    .inputConteneur input {
+        font-size: 1rem !important;
+    }
+
+    .inputConteneur .icon {
+        font-size: 1rem !important;
+    }
+
+    .image {
+        flex: 1;
+        max-width: 200px;
+    }
+}
+
+@media only screen and (max-width: 513px) {
+    .bas {
+        flex-direction: column;
+    }
+
+    .description {
+        margin-top: 2.5em !important;
+        font-size: 2em !important;
+        margin-bottom: 3em !important;
+    }
 }
