@@ -4,8 +4,6 @@ import styles from './Transition.module.css'
 function Transition(props) {
     const transitionRef = useRef(null);
 
-
-
     function getStyle(style) {
         switch (style) {
             case "mainJson":
@@ -27,8 +25,7 @@ function Transition(props) {
     }, [props.styles]);
 
     return (
-        <div ref={transitionRef} className={styles.transitionConteneur}>
-        </div>
+        <div ref={transitionRef} className={styles.transitionConteneur} />
     )
 }
 
