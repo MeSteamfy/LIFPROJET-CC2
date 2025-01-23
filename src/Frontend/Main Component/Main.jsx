@@ -1,14 +1,17 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import styles from "./Main.module.css"
+import Chargement from "../Chargement/Chargement";
 
 function Main() {
+    const [chargement, updateChargement] = useState(false);
+
     const inputValeurRef = useRef(null);
     const valRandomPlaceholder = ["Flareon", "Lugia", "Sylveon", "Dragapult", "Noivern", "Espeon", "Raging Bolt", "Iron Valiant", "Heatran", "Sylveon", "Dusknoir"];
     const randomImageIndex = Math.floor(Math.random()*valRandomPlaceholder.length);
 
     function testIcon() {
         if (inputValeurRef.current && inputValeurRef.current.value.length > 0) {
-            console.log("Envoi dans le backend...");
+            updateChargement(true);
         }
     }
 
@@ -32,6 +35,7 @@ function Main() {
                 <img src={`/${randomImageIndex +1}.png`} className={styles.image} />
             </div>
             
+            {chargement && <Chargement />}
 
         </div>
     )
