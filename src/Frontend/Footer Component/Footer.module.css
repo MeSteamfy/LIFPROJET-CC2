@@ -3,6 +3,39 @@
     width: 100%;
     display: flex;
     justify-content: center;
+    flex-direction: column;
+    align-items: center;
     color: white;
-    
+}
+
+.footerConteneur .image {
+    margin-top: -4em;
+    margin-bottom: -5em;
+    width: 400px;
+}
+
+.footerConteneur .copyright {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    max-width: 95%;
+}
+
+.footerConteneur .copyright p {
+    color: white;
+    font-weight: 700;
+    font-size: 2em;
+    text-align: center;
+    cursor: default;
+}
+
+.footerConteneur .copyright .nom {
+    color: rgb(78, 247, 87);
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.footerConteneur .copyright .nom:hover {
+    color: rgb(45, 187, 52)
 }

@@ -7,7 +7,7 @@ function JSONSection() {
                 Une application utilisant le <span className={styles.span}>machine learning</span> pour prédire les prix!
             </p>
             <div className={styles.bas}>
-                <img src={`/${Math.ceil(Math.random()*10)}.png`} className={styles.image} />
+                <img src={"/Venusaur.png"} className={styles.image} />
 
                 <code className={styles.code}>
                     <span className={styles.line}>{'{'}</span>
