@@ -64,6 +64,14 @@
 
 .mainConteneur .span {
     color: rgb(68, 240, 111);
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.mainConteneur .span:hover {
+    color: rgb(26, 170, 62)
 }
 
 .mainConteneur .bas {

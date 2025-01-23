@@ -25,7 +25,7 @@ function Main() {
                         <i onClick={testIcon} className={`fa-solid fa-magnifying-glass ${styles.icon}`} />
                     </div>
                     <p className={styles.info}>
-                        Ce site utilise l'API <span className={styles.span}>[indiquer ici le nom de l'api qu'on utilisera]</span> pour récupérer les données.
+                        Ce site utilise l'API <a target="_blank" href="https://docs.pokemontcg.io/" className={styles.span}>Pokémon TCG API</a> pour récupérer les données.
                     </p>
                 </div>
                 

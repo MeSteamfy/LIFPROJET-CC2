@@ -14,22 +14,22 @@ function JSONSection() {
                     <span className={`${styles.line} ${styles.tab}`}>"data": {'{'}</span>
                     <span className={`${styles.line} ${styles.margin}`}>"id": "xy1-1",</span>
                     <span className={`${styles.line} ${styles.margin}`}>"name": "Venusaur-EX",</span>
-                    <span className={`${styles.line} ${styles.margin}`}>"supertype": "Pokémon"</span>
-                    <span className={`${styles.line} ${styles.tab}`}>{'},'}</span>
+                    <span className={`${styles.line} ${styles.margin}`}>"supertype": "Pokémon",</span>
 
-                    <span className={`${styles.line} ${styles.margin}`}>...</span>
 
-                    <span className={`${styles.line} ${styles.tab}`}>"prices": {'{'}</span>
-                    <span className={`${styles.line} ${styles.margin}`}>"low": 1.0,</span>
-                    <span className={`${styles.line} ${styles.margin}`}>"mid": 3.46,</span>
-                    <span className={`${styles.line} ${styles.margin}`}>"high": 12.95,</span>
-                    <span className={`${styles.line} ${styles.margin}`}>"market": 3.32,</span>
-                    <span className={`${styles.line} ${styles.margin}`}>"directLow": 2.95</span>
-                    <span className={`${styles.line} ${styles.margin} ${styles.predict}`}>"predictionPrice": 9.51,</span>
-                    <span className={`${styles.line} ${styles.margin} ${styles.predict}`}>"predictionYear": 2025</span>
-                    <span className={`${styles.line} ${styles.tab}`}>{'},'}</span>
+                    <span className={`${styles.line} ${styles.margin}`}>...,</span><br />
 
-                    <span className={`${styles.line} ${styles.margin}`}>...</span>
+                    <span className={`${styles.line} ${styles.margin}`}>"prices": {'{'}</span>
+                    <span className={`${styles.line} ${styles.push}`}>"low": 1.0,</span>
+                    <span className={`${styles.line} ${styles.push}`}>"mid": 3.46,</span>
+                    <span className={`${styles.line} ${styles.push}`}>"high": 12.95,</span>
+                    <span className={`${styles.line} ${styles.push}`}>"market": 3.32,</span>
+                    <span className={`${styles.line} ${styles.push}`}>"directLow": 2.95</span>
+                    <span className={`${styles.line} ${styles.push} ${styles.predict}`}>"predictionPrice": 9.51,</span>
+                    <span className={`${styles.line} ${styles.push} ${styles.predict}`}>"predictionYear": 2025</span>
+                    <span className={`${styles.line} ${styles.margin}`}>{'},'}</span>
+
+                    <span className={`${styles.line} ${styles.margin}`}>...,</span>
                     <span className={styles.line}>{'}'}</span>
                 </code>
             </div>

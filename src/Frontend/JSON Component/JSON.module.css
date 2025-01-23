@@ -65,6 +65,10 @@
     margin-left: 2em;
 }
 
+.jsonConteneur .bas .code .push {
+    margin-left: 3em;
+}
+
 .jsonConteneur .bas .code .predict {
     color: rgb(52, 225, 52);
 }
