@@ -6,12 +6,14 @@
     flex-direction: column;
     align-items: center;
     color: white;
+    margin-bottom: 5em;
 }
 
 .footerConteneur .image {
     margin-top: -4em;
     margin-bottom: -5em;
-    width: 400px;
+    max-width: 400px;
+    padding: 0;
 }
 
 .footerConteneur .copyright {
@@ -25,7 +27,7 @@
 .footerConteneur .copyright p {
     color: white;
     font-weight: 700;
-    font-size: 2em;
+    font-size: 1.5em;
     text-align: center;
     cursor: default;
 }
@@ -38,4 +40,11 @@
 
 .footerConteneur .copyright .nom:hover {
     color: rgb(45, 187, 52)
+}
+
+@media only screen and (max-width: 450px) {
+    .footerConteneur .image {
+        width: 250px;
+        margin-bottom: -1.5em;
+    }
 }

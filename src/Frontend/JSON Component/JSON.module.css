@@ -26,9 +26,8 @@
 .jsonConteneur .bas {
     width: 100%;
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
-    gap: 20em;
     margin-bottom: 3em;
 }
 
@@ -71,4 +70,29 @@
 
 .jsonConteneur .bas .code .predict {
     color: rgb(52, 225, 52);
+}
+
+@media only screen and (max-width: 965px) {
+    .jsonConteneur .bas {
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .jsonConteneur .bas .image {
+        width: 230px;
+    }
+
+    .jsonConteneur .bas .code {
+        max-width: 230px;
+    }
+
+    .jsonConteneur .bas .code .line {
+        font-size: 1rem;
+    }
+}
+
+@media only screen and (max-width: 415px) {
+    .jsonConteneur .bas .code .line {
+        font-size: 0.75rem;
+    }
 }
