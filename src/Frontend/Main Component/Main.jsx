@@ -1,10 +1,9 @@
 import { useEffect, useRef, useContext } from "react";
 import styles from "./Main.module.css"
 import { DataContext } from "../DataContext";
-import Prediction from "../Prediction Component/Prediction";
 
 function Main() {
-    const { predictionOn, updatePrediction } = useContext(DataContext);
+    const { updatePrediction } = useContext(DataContext);
 
     const mainRef = useRef(null);
     const inputValeurRef = useRef(null);
