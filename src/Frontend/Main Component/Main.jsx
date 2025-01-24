@@ -1,19 +1,21 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "./Main.module.css"
-import Chargement from "../Chargement/Chargement";
+import { DataContext } from "../DataContext";
+import { useContext } from "react";
+import Prediction from "../Prediction Component/Prediction";
 
 function Main() {
-    const [chargement, updateChargement] = useState(false);
+    const { predictionOn, updatePrediction } = useContext(DataContext);
 
     const mainRef = useRef(null);
-
     const inputValeurRef = useRef(null);
+
     const valRandomPlaceholder = ["Flareon", "Lugia", "Sylveon", "Dragapult", "Noivern", "Espeon", "Raging Bolt", "Iron Valiant", "Heatran", "Sylveon", "Dusknoir"];
     const randomImageIndex = Math.floor(Math.random()*valRandomPlaceholder.length);
 
     function testIcon() {
         if (inputValeurRef.current && inputValeurRef.current.value.length > 0) {
-            updateChargement(true);
+            updatePrediction(true);
         }
     }
 
@@ -60,7 +62,7 @@ function Main() {
                     <img src={`/${randomImageIndex +1}.png`} className={styles.image} />
                 </div>
                 
-                {chargement && <Chargement />}
+                {predictionOn && <Prediction />}
             </div>
         </div>
     )
