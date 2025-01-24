@@ -1,4 +1,14 @@
-.footerConteneur{
+@keyframes apparition {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.footerConteneur, .footer {
     background-color: rgb(13, 30, 58);
     width: 100%;
     display: flex;
@@ -7,6 +17,14 @@
     align-items: center;
     color: white;
     margin-bottom: 5em;
+}
+
+.footer {
+    opacity: 0;
+}
+
+.visible {
+    animation: apparition 1.5s both;
 }
 
 .footerConteneur .image {
