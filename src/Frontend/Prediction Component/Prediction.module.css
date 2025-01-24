@@ -75,3 +75,10 @@
 .prediction .resultats {
     flex: 1;
 }
+
+.prediction .resultats.center {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
