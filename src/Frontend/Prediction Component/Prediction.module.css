@@ -18,6 +18,15 @@
     }
 }
 
+.apparait {
+    animation: apparait 0.3s ease-in-out both;
+}
+
+.disparait {
+    animation: disparait 0.3s ease-in-out both;
+}
+
+
 .predictionConteneur {
     position: fixed;
     background-color: rgba(0, 0, 0, 0.6);
@@ -27,8 +36,42 @@
     left: 0;
     z-index: 1000;
     opacity: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.apparait {
-    animation: apparait 0.3s ease-in-out both;
+.prediction {
+    background-color: rgb(60, 108, 180);
+    width: 600px;
+    height: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: relative;
+    box-shadow: 0 0 10px rgb(75, 112, 167);
+    border-radius: 10px;
+}
+
+.prediction .icon {
+    position: absolute;
+    cursor: pointer;
+    color: rgb(255, 79, 79);
+    transition: color 0.3s;
+    font-size: 2em;
+    top: 20px;
+    right: 20px;
+}
+
+.prediction .icon:hover {
+    color: rgb(201, 36, 36);
+}
+
+.prediction .title {
+    color: white;
+}
+
+.prediction .resultats {
+    flex: 1;
 }

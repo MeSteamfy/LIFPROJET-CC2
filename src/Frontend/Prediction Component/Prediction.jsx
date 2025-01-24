@@ -30,8 +30,11 @@ function Prediction() {
             { predictionOn && (
                 <div ref={conteneurRef} className={`${styles.predictionConteneur} ${styles.apparait}`}>
                     <div className={styles.prediction}>
-                        <i className={`${styles.icon} fa-solid fa-xmark`}></i>
-                        
+                        <i onClick={fermePage} className={`${styles.icon} fa-solid fa-xmark`}></i>
+                        <h1 className={styles.title}>Résultats de votre recherche</h1>
+                        <div className={styles.resultats}>
+
+                        </div>                        
                     </div>
                 </div>
             )}

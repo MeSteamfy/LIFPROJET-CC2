@@ -1,7 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useContext } from "react";
 import styles from "./Main.module.css"
 import { DataContext } from "../DataContext";
-import { useContext } from "react";
 import Prediction from "../Prediction Component/Prediction";
 
 function Main() {
@@ -61,8 +60,6 @@ function Main() {
                     
                     <img src={`/${randomImageIndex +1}.png`} className={styles.image} />
                 </div>
-                
-                {predictionOn && <Prediction />}
             </div>
         </div>
     )
