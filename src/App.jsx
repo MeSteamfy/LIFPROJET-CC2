@@ -5,35 +5,40 @@ import Main from "./Frontend/Main Component/Main"
 import Footer from "./Frontend/Footer Component/Footer"
 import DonnesPrediction, { DataContext } from "./Frontend/DataContext"
 import Prediction from "./Frontend/Prediction Component/Prediction"
-import { useContext } from "react"
+import { useContext } from "react";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import Cartes from "./Frontend/Cartes/showcarte";
+import Graphes from "./Frontend/Graphes/showgraphes";
 
 function App() {
   return (
-    <>
-      <DonnesPrediction>
-        <PoketchAPI />
+    <Router>
+      <DonnesPrediction> {/* On déplace DonnesPrediction ici pour englober toute l'application */}
+        <Header />
+        <Routes>
+          <Route path="/" element={<PoketchAPI />} />
+          <Route path="/cartes" element={<Cartes />} />
+          <Route path="/graphes" element={<Graphes />} />
+        </Routes>
       </DonnesPrediction>
-    </>
+    </Router>
   )
 }
 
 function PoketchAPI() {
+  const { predictionOn } = useContext(DataContext);
 
-    // tu peux pas mettres predictionOn directement dans <App /> parce qu'il faut que son appel soit englober
-    // dans <DonnesPrediction />
-
-    const { predictionOn } = useContext(DataContext);
-    return (
+  return (
     <>
-          <Header />
-          <Main />
-          <Transition styles="mainJson" />
-          <JSONSection />
-          <Transition styles="jsonFooter" />
-          <Footer />
-          {predictionOn && <Prediction />}
-      </>
-    )
+      <Main />
+      <Transition styles="mainJson" />
+      <JSONSection />
+      <Transition styles="jsonFooter" />
+      <Footer />
+
+      {predictionOn && <Prediction />}
+    </>
+  );
 }
 
-export default App
+export default App;
