@@ -23,7 +23,6 @@ def pokemonID():
         'rarity': card.rarity,
         'type': card.types,
     }
-    # Retourner la carte sous forme de réponse JSON
     return jsonify(card_data)
 
 if __name__ == '__main__':
