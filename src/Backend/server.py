@@ -22,8 +22,15 @@ def pokemonID():
         'set': card.set.name,
         'rarity': card.rarity,
         'type': card.types,
+        'images': card.images
     }
     return jsonify(card_data)
+
+@app.route('/pokemon/<id>')
+def get_pokemon(id):
+    # test
+    return f"Le Pokémon avec l'ID {id} a été trouvé."
+
 
 if __name__ == '__main__':
     app.run(debug=True)
