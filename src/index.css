@@ -9,6 +9,10 @@
 		"wdth" 100;
 }
 
+.link {
+	text-decoration: none;
+}
+
 .mainJson {
 	background: rgb(50,72,131);
 	background: linear-gradient(180deg, rgba(50,72,131,1) 35%, rgba(60,100,152,1) 100%); 

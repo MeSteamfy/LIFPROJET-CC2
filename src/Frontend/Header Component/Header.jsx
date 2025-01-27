@@ -4,17 +4,16 @@ import styles from "./Header.module.css";
 function Header() {
   return (
     <nav className={styles.navConteneur}>
-      <Link to="/">
-      <img src="/logo.png" className={styles.image} />
-
+      <Link className='link' to="/">
+        <img src="/logo.png" className={styles.image} />
       </Link>
 
       <div className={styles.conteneurCote}>
-        <Link to="/cartes"> 
+        <Link className='link' to="/cartes"> 
           <p className={styles.info}>Cartes</p>
         </Link>
         
-        <Link to="/graphes"> 
+        <Link className='link' to="/graphes"> 
           <p className={styles.info}>Graphes</p>
         </Link>
       </div>

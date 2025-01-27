@@ -7,8 +7,8 @@ import DonnesPrediction, { DataContext } from "./Frontend/DataContext"
 import Prediction from "./Frontend/Prediction Component/Prediction"
 import { useContext } from "react";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import Cartes from "./Frontend/Cartes/showcarte";
-import Graphes from "./Frontend/Graphes/showgraphes";
+import Sets from "./Frontend/Sets/Sets"
+import Graphes from "./Frontend/Graphes/Graphes"
 
 function App() {
   return (
@@ -17,7 +17,7 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element={<PoketchAPI />} />
-          <Route path="/cartes" element={<Cartes />} />
+          <Route path="/sets" element={ <Sets />} />
           <Route path="/graphes" element={<Graphes />} />
         </Routes>
       </DonnesPrediction>

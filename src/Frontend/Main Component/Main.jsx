@@ -39,6 +39,15 @@ function Main() {
         }
     }, []);
 
+    useEffect(() => {
+        function appuieSurEntree(event) {
+            if (event.key === "Enter") testIcon();
+        }
+    
+        document.addEventListener('keydown', appuieSurEntree);
+        return () => document.removeEventListener('keydown', appuieSurEntree);
+    }, [inputValeurRef.current]);
+
     return (
         <div className={styles.mainConteneur}>
             <div ref={mainRef} className={styles.main}>
