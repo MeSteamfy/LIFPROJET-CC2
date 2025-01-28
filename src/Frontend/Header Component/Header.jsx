@@ -9,8 +9,8 @@ function Header() {
       </Link>
 
       <div className={styles.conteneurCote}>
-        <Link className='link' to="/cartes"> 
-          <p className={styles.info}>Cartes</p>
+        <Link className='link' to="/sets"> 
+          <p className={styles.info}>Sets</p>
         </Link>
         
         <Link className='link' to="/graphes"> 
