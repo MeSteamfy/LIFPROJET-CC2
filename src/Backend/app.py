@@ -29,8 +29,15 @@ def getAllSets():
 @app.route('/sets/<id>')
 def getSetById(id):
     try:
-        set = Set.find(id)
-        return jsonify(set)
+        tabCartes = []
+        set = Set.find(f"{id}")
+        if not set:
+            return jsonify("naaaaan")
+
+        for i in range(set.total):
+            tabCartes.append(Card.find({id}-{i+1}))
+        
+        return "heyyyy"
 
     except:
         erreur = {
@@ -39,7 +46,7 @@ def getSetById(id):
         return jsonify(erreur)
 
 @app.route('/pokemon/<id>')
-def getPokemon():
+def getPokemon(id):
     try:
         card = Card.find(id)
 

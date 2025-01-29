@@ -21,7 +21,6 @@ function Sets() {
         async function getAllSets() {
             try {
                 const backendReponse = await axios.get('http://localhost:5000/sets');
-                console.log(backendReponse.data)
                 const newSetsData = { ...setsData };
 
                 backendReponse.data?.forEach((obj) => {

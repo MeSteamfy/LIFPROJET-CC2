@@ -9,6 +9,7 @@ import { useContext } from "react";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Sets from "./Frontend/Sets/Sets"
 import Graphes from "./Frontend/Graphes/Graphes"
+import SetCartes from "./Frontend/Sets/Cartes Set/SetCartes"
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/" element={<PoketchAPI />} />
           <Route path="/sets" element={ <Sets />} />
           <Route path="/graphes" element={<Graphes />} />
+          <Route path="/sets/:setID" element={ <SetCartes />} />
         </Routes>
       </DonnesPrediction>
     </Router>
