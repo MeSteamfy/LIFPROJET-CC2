@@ -36,15 +36,16 @@ def getSetById(id):
         
         nbCartes = set.total
 
-        for i in range(min(nbCartes, 10)): 
-            card_id = f'{id}-{i+1}'
-            card = Card.find(card_id)  
+        for i in range(min(nbCartes, 20)): # l'API est pour l'instant buggé, on limit a 20 le nb de pokémon
+            cardID = f'{id}-{i+1}'
+            card = Card.find(cardID)  
             if card: 
                 card_dict = {
                     'id': card.id, 
                     'name': card.name,
                     'rarity': card.rarity,
                     'set': card.set,
+                    'images': card.images
                 }
                 tabCartes.append(card_dict) 
 
