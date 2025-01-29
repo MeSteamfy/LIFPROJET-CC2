@@ -24,26 +24,38 @@ def getAllSets():
         erreur = {
             'messageErreur': "Une erreur a été détecté."
         }
-        return jsonify(erreur)
+        return jsonify(erreur), 500
 
 @app.route('/sets/<id>')
 def getSetById(id):
     try:
         tabCartes = []
-        set = Set.find(f"{id}")
+        set = Set.find(id)
         if not set:
-            return jsonify("naaaaan")
-
-        for i in range(set.total):
-            tabCartes.append(Card.find({id}-{i+1}))
+            return jsonify({"message": "Set not found"}), 404
         
-        return "heyyyy"
+        nbCartes = set.total
 
-    except:
+        for i in range(min(nbCartes, 10)): 
+            card_id = f'{id}-{i+1}'
+            card = Card.find(card_id)  
+            if card: 
+                card_dict = {
+                    'id': card.id, 
+                    'name': card.name,
+                    'rarity': card.rarity,
+                    'set': card.set,
+                }
+                tabCartes.append(card_dict) 
+
+        return jsonify(tabCartes)
+
+    except Exception as e:
         erreur = {
-            'messageErreur': "Une erreur a été détecté."
+            'messageErreur': "Une erreur a été détectée.",
+            'details': str(e)
         }
-        return jsonify(erreur)
+        return jsonify(erreur), 500
 
 @app.route('/pokemon/<id>')
 def getPokemon(id):
@@ -64,7 +76,7 @@ def getPokemon(id):
         erreur = {
             'messageErreur': "Une erreur a été détecté."
         }
-        return jsonify(erreur)
+        return jsonify(erreur), 500
 
 if __name__ == '__main__':
     app.run(debug=True)
