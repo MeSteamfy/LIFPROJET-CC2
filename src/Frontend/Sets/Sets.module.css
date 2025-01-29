@@ -2,38 +2,82 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
+    padding-top: 8em;
 }
 
 .setsConteneur .sets {
-    margin-top: 8em;
+    margin-bottom: 8em;
     display: flex;
+    width: 95%;
     justify-content: center;
     align-items: flex-start;
+    flex-direction: column;
     flex-wrap: wrap;
     gap: 2em;
 }
 
-.setsConteneur .sets .set {
-    min-height: 300px;
+.setsConteneur .sets .setTitle {
+    color: white;
+}
+
+.setsConteneur .sets .setDisplay {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 2em;
+}
+
+.setDisplay .set {
+    height: 120px;
+    max-width: 300px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: 2em;
     border: 2px solid transparent;
-    transition: border 0.3s ease-in-out;
-    padding: 20px;
+    transition: all 0.3s ease-in-out;
+    padding: 30px;
     border-radius: 10px;
     background-color: rgb(32, 82, 116);
+    overflow: hidden;
+    cursor: pointer;
 }
 
-.setsConteneur .sets .set:hover {
+.setDisplay .set:hover {
     border: 2px solid white;
+    transform: scale(1.1);
 }
 
-.setsConteneur .sets .set .image {
+.setsConteneur .imgConteneur {
+    flex: 1;
     width: 200px;
+    height: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+}
+
+.imgConteneur .image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
 }
 
 .setsConteneur .sets .set .infoConteneur {
-    flex: 1;
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+.infoConteneur p {
+    margin: 0;
+    color: white;
+    font-weight: bold;
 }
