@@ -1,0 +1,46 @@
+.setsConteneur {
+    opacity: 0;
+    margin: 4em 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 95%;
+    height: 100%;
+}
+
+.setsConteneur .titre {
+    font-weight: bold;
+    font-size: 3em;
+    text-shadow: 0 3px 1px gray;
+    color: white;
+}
+
+.titre .setSelect {
+    color: rgb(50, 238, 50);
+    text-shadow: 0 3px 1px green;
+}
+
+.setsConteneur .cartesDisplay {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 2em;
+    width: 95%;
+}
+
+.cartesDisplay .set {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.set .image {
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+}
+
+.set .image:hover {
+    transform: scale(1.1);
+}

@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react';
 import styles from './Sets.module.css'; 
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function Sets() {
+    const navigate = useNavigate()
+
     const [setsData, setSetsData] = useState({
         scarletViolet: [],
         swordShield: [],
@@ -113,7 +116,7 @@ function Sets() {
                         <h1 className={styles.setTitle}>{series.name}</h1>
                         <div className={styles.setDisplay}>
                             {setsData[series.key].map((set, index) => (
-                                <div className={styles.set} key={index}>
+                                <div onClick={() => navigate(`/sets/${set.id}`)} className={styles.set} key={index}>
                                     <div className={styles.imgConteneur}>
                                         <img src={set.images.logo} className={styles.image} alt={set.name} />
                                     </div>

@@ -30,12 +30,15 @@ function SetCartes() {
     }, [])
 
     return (
-        <div className={styles.setsConteneur}>
+        <div className={`${styles.setsConteneur} apparait`}>
+            <h1 className={styles.titre}>
+                Set "<span className={styles.setSelect}>{setID.toLocaleUpperCase()}</span>"
+            </h1>
             {chargementOn ? <Chargement /> : (
                 <div className={styles.cartesDisplay}>
                     {cartesDuSet.map((carte, index) => (
                         <div key={index} className={styles.set}>
-                            <img src={carte.images.small}></img>
+                            <img className={styles.image} src={carte.images.small}></img>
                         </div>
                     ))}
                 </div>
