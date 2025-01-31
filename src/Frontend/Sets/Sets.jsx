@@ -1,10 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styles from './Sets.module.css'; 
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Chargement from '../Chargement/Chargement'
 
 function Sets() {
     const navigate = useNavigate()
+
+    const iconRef = useRef(null);
 
     const [setsData, setSetsData] = useState({
         scarletViolet: [],
@@ -18,7 +21,9 @@ function Sets() {
         base: [],
     });
 
-    const [typeFiltre, updateFiltre] = useState("Tout");
+    const [filtreOn, updateFiltreState] = useState(false);
+    const [typeFiltre, updateFiltre] = useState("scarletViolet");
+    const [chargement, updateChargement] = useState(true);
 
     useEffect(() => {
         async function getAllSets() {
@@ -77,6 +82,10 @@ function Sets() {
             catch (error) {
                 console.error(error);
             }
+
+            finally {
+                updateChargement(false)
+            }
         }
         getAllSets();
     }, []);
@@ -93,25 +102,44 @@ function Sets() {
         { name: "Base", key: "base" },
     ];
 
-    const handleFilterChange = (event) => {
-        updateFiltre(event.target.value);
-    };
+    const toggleFiltre = () => {
+        if (iconRef.current) {
+            if (!filtreOn) iconRef.current.classList.replace("fa-plus", "fa-minus");
+            else iconRef.current.classList.replace("fa-minus", "fa-plus");
+            updateFiltreState(!filtreOn)
+        }
+    }
 
     const filteredSets = typeFiltre === "Tout" ? seriesList : seriesList.filter(series => series.key === typeFiltre);
 
     return (
         <div className={styles.setsConteneur}>
-            <div className={styles.filtres}>
-                <h1 className={styles.titre}>Filtres</h1>
-                <select onChange={handleFilterChange} value={typeFiltre} className={styles.select}>
-                    <option value="Tout">Tout</option>
-                    {seriesList.map((series) => (
-                        <option key={series.key} value={series.key}>{series.name}</option>
-                    ))}
-                </select>
+            <div className={styles.filtreConteneur}>
+                {filtreOn && (
+                    <div className={styles.filtreOptions}>
+                        <p onClick={() => updateFiltre("Tout")} className={styles.option}>Tout</p>
+                        <p onClick={() => updateFiltre("scarletViolet")} className={styles.option}>Scarlet & Violet</p>
+                        <p onClick={() => updateFiltre("swordShield")} className={styles.option}>Sword & Shield</p>
+                        <p onClick={() => updateFiltre("sunMoon")} className={styles.option}>Sun & Moon</p>
+                        <p onClick={() => updateFiltre("xY")} className={styles.option}>X & Y</p>
+                        <p onClick={() => updateFiltre("blackWhite")} className={styles.option}>Black & White</p>
+                        <p onClick={() => updateFiltre("heartSoul")} className={styles.option}>HeartGold & SoulSilver</p>
+                        <p onClick={() => updateFiltre("platinum")} className={styles.option}>Platinum</p>
+                        <p onClick={() => updateFiltre("diamondPearl")} className={styles.option}>Diamond & Pearl</p>
+                        <p onClick={() => updateFiltre("base")} className={styles.option}>Base</p>
+                    </div>
+                )}
+
+                <div onClick={toggleFiltre} className={styles.filtre}>
+                    <i ref={iconRef} className={`${styles.icon} fa-solid fa-plus`}></i>
+                </div>                
             </div>
+
+            {chargement && <Chargement />}
+
             <div className={styles.sets}>
-                {filteredSets.map((series) => (
+                
+                {!chargement && filteredSets.map((series) => (
                     <div key={series.key}>
                         <h1 className={styles.setTitle}>{series.name}</h1>
                         <div className={styles.setDisplay}>
