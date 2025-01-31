@@ -2,13 +2,16 @@ import { useEffect, useRef, useState } from "react";
 import styles from "./Prediction.module.css"
 import { DataContext } from "../DataContext";
 import { useContext } from "react";
+import axios from "axios";
 import Chargement from "../Chargement/Chargement";
 
-function Prediction() {
+function Prediction(props) {
     const conteneurRef = useRef(null);
 
-    const {predictionOn, updatePrediction} = useContext(DataContext);
+    const {predictionOn, updatePrediction, pokemonSelect} = useContext(DataContext);
+
     const [chargement, updateChargement] = useState(true);
+    const [pokemonData, updatePokemonData] = useState([]);
 
     function fermePage() {
         conteneurRef.current.classList.replace(styles.apparait, styles.disparait);
@@ -19,9 +22,25 @@ function Prediction() {
     }
 
     useEffect(() => {
-        setTimeout(() => {
-            updateChargement(false);
-        }, Math.floor(Math.random()*3000) + 400);
+        if (!props.pokemonID) fermePage();
+
+        const getPokemonInfo = async () => {
+            try {
+                const backendReponse = await axios.get(`http://localhost:5000/pokemon/${props.pokemonID}`);
+                updatePokemonData(backendReponse.data)
+                console.log(backendReponse.data);
+            }
+    
+            catch(error) {
+                console.error(error);
+            }
+    
+            finally {
+                updateChargement(false);
+            }
+        }
+
+        getPokemonInfo();
     }, []);
 
     useEffect(() => {
@@ -41,7 +60,25 @@ function Prediction() {
                         <i onClick={fermePage} className={`${styles.icon} fa-solid fa-xmark`}></i>
                         <h1 className={styles.title}>Résultats de votre recherche</h1>
                         <div className={`${styles.resultats} ${chargement ? styles.center : ''}`}>
-                            {chargement && <Chargement />}
+                            {chargement ? <Chargement /> : (
+                                <div className={`${styles.carteInfo} apparait`}>
+                                    <img src={pokemonData.images.small} className={styles.image} />
+
+                                    <div className={styles.infoConteneur}>
+                                        <div className={styles.headerConteneur}>
+                                            <div className={styles.header}>
+                                                <p className={styles.info}>{pokemonData.name}</p>
+                                                {/* img du type ici */}
+                                            </div>
+                                            <p className={styles.set}>{pokemonData.set}</p>
+                                        </div>
+
+                                        <div className={styles.futurePrix}>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
                         </div>                        
                     </div>
                 </div>
