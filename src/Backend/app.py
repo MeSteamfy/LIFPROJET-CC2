@@ -58,6 +58,17 @@ def getSetById(id):
         }
         return jsonify(erreur), 500
 
+@app.route('/pokemon/search/<pokemonName>')
+def getPokemonByName(pokemonName):
+    try:
+        cards = Card.where(q=f'name:{pokemonName}')
+        return jsonify(cards)
+
+    except:
+        erreur = { 'messageErreur': "Erreur detecté"}
+        return jsonify(erreur), 500
+
+
 @app.route('/pokemon/<id>')
 def getPokemon(id):
     try:
