@@ -1,6 +1,8 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useContext } from 'react'
 import styles from './CartesQuery.module.css'
 import Chargement from '../../Chargement/Chargement';
+import Prediction from '../../Prediction Component/Prediction';
+import { DataContext } from '../../DataContext';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -13,7 +15,7 @@ export default function CartesQuery() {
 
     const { pokemonName } = useParams();
     const inputValeurRef = useRef(null);
-
+    const { predictionOn, updateSelectPokemon, updatePrediction, pokemonSelect } = useContext(DataContext)
     const [chargementOn, updateChargement] = useState(true);
     const [errorDetected, updateErrorState] = useState(false);
     const [cartesDisplay, updateCartesDisplay] = useState([]);
@@ -22,6 +24,15 @@ export default function CartesQuery() {
         if (inputValeurRef.current) navigate(`/pokemon/search/${inputValeurRef.current.value}`);
         else return;
     }
+
+    function openCarte(pokemonID) {
+        updateSelectPokemon(pokemonID);
+        updatePrediction(true);
+    }
+
+    useEffect(() => {
+        if (predictionOn) updatePrediction(false);
+    }, []);
 
     useEffect(() => {
         async function loadCardsByName() {
@@ -73,7 +84,7 @@ export default function CartesQuery() {
                 ) : (
                     <div className={styles.cartes}>
                         {cartesDisplay.length > 0 && cartesDisplay.map((carte, index) => (
-                            <div key={index} className={styles.carte}>
+                            <div onClick={() => openCarte(carte.id)} key={index} className={styles.carte}>
                                 <img src={carte.images.small} className={styles.image} />
                             </div>
                         ))}
@@ -81,6 +92,8 @@ export default function CartesQuery() {
                     </div>
                 )}
             </div>
+
+            {predictionOn && <Prediction pokemonID={pokemonSelect} />}
         </div>
     )
 }

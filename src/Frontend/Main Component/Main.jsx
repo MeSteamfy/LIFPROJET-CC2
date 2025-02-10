@@ -1,9 +1,9 @@
-import { useEffect, useRef, useContext } from "react";
+import { useEffect, useRef } from "react";
 import styles from "./Main.module.css"
-import { DataContext } from "../DataContext";
+import { useNavigate } from "react-router-dom";
 
 function Main() {
-    const { updatePrediction } = useContext(DataContext);
+    const navigate = useNavigate();
 
     const mainRef = useRef(null);
     const inputValeurRef = useRef(null);
@@ -11,10 +11,9 @@ function Main() {
     const valRandomPlaceholder = ["Flareon", "Lugia", "Sylveon", "Dragapult", "Noivern", "Espeon", "Raging Bolt", "Iron Valiant", "Heatran", "Sylveon", "Dusknoir"];
     const randomImageIndex = Math.floor(Math.random()*valRandomPlaceholder.length);
 
-    function testIcon() {
-        if (inputValeurRef.current && inputValeurRef.current.value.length > 0) {
-            updatePrediction(true);
-        }
+    function getCartesBySearch() {
+        if (inputValeurRef.current) navigate(`/pokemon/search/${inputValeurRef.current.value}`);
+        else return;
     }
 
     useEffect(() => {
@@ -41,7 +40,7 @@ function Main() {
 
     useEffect(() => {
         function appuieSurEntree(event) {
-            if (event.key === "Enter") testIcon();
+            if (event.key === "Enter") getCartesBySearch();
         }
     
         document.addEventListener('keydown', appuieSurEntree);
@@ -59,7 +58,7 @@ function Main() {
                         <h1 className={styles.titre}>PoketchAPI</h1>
                         <div className={styles.inputConteneur}>
                             <input type="text" ref={inputValeurRef} className={styles.input} placeholder={`${valRandomPlaceholder[randomImageIndex]}...`} />
-                            <i onClick={testIcon} className={`fa-solid fa-magnifying-glass ${styles.icon}`} />
+                            <i onClick={getCartesBySearch} className={`fa-solid fa-magnifying-glass ${styles.icon}`} />
                         </div>
                         <p className={styles.info}>
                             Ce site utilise l'API <a target="_blank" href="https://docs.pokemontcg.io/" className={styles.span}>Pokémon TCG API</a> pour récupérer les données.

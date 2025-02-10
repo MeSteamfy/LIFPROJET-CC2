@@ -32,7 +32,11 @@ function SetCartes() {
         laod()
     }, []);
 
-    const openCarte = (pokemonID) => {
+    useEffect(() => {
+        if (predictionOn) updatePrediction(false);
+    }, []);
+
+    function openCarte(pokemonID) {
         updateSelectPokemon(pokemonID);
         updatePrediction(true);
     }
