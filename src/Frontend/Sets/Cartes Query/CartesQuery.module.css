@@ -1,0 +1,109 @@
+.resultatRechercheConteneur {
+    opacity: 0;
+    margin: 4em 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 95%;
+    height: 100%;
+}
+
+.resultatRechercheConteneur .titre {
+    font-weight: bold;
+    font-size: 3em;
+    text-shadow: 0 3px 1px gray;
+    color: white;
+    text-align: center;
+}
+
+.titre .pokemonSelect {
+    color: rgb(50, 238, 50);
+    text-shadow: 0 3px 1px green;
+}
+
+.resultatRecherche {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.resultatRecherche .cartes {
+    width: 95%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.75em;
+}
+
+.resultatRecherche .error {
+    color: white;
+    font-weight: bold;
+    font-size: 2em;
+    text-align: center;
+}
+
+.resultatRecherche .image {
+    border-radius: 5px;
+    width: 200px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.resultatRecherche .image:hover {
+    transform: scale(1.1);
+    border: 2px solid white;
+}
+
+.noResultat {
+    max-width: 95%;
+    color: white;
+    text-align: center;
+    font-size: 2em;
+    font-weight: bold;
+    text-wrap: nowrap;
+}
+
+.inputConteneur {
+    position: fixed;
+    z-index: 15;
+    bottom: 2em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(55, 88, 179);
+    box-shadow: 0 5px 2px rgb(21, 48, 122);
+    font-size: 1rem;
+    padding: 1em 1.75em;
+    border-radius: 10px;
+    animation: apparition 0.3s both;
+}
+
+.inputConteneur .icon {
+    color: white;
+    margin-left: -2rem;
+    cursor: pointer;
+    font-size: 1.5em;
+    transition: color 0.2s;
+}
+
+.inputConteneur .icon:hover {
+    color: rgb(49, 192, 49);
+}
+
+.inputConteneur .input {
+    width: 100%;
+    font-size: 1.2em;
+    border: 1px solid transparent;
+    background-color: transparent;
+    resize: none;
+    outline: none;
+    color: white;
+    font-weight: bold;
+}
+
+.inputConteneur .input::placeholder {
+    color: rgb(202, 202, 202)
+}

@@ -10,6 +10,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Sets from "./Frontend/Sets/Sets"
 import Graphes from "./Frontend/Graphes/Graphes"
 import SetCartes from "./Frontend/Sets/Cartes Set/SetCartes"
+import CartesQuery from "./Frontend/Sets/Cartes Query/CartesQuery"
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/sets" element={ <Sets />} />
           <Route path="/graphes" element={<Graphes />} />
           <Route path="/sets/:setID" element={ <SetCartes />} />
+          <Route path="/pokemon/search/:pokemonName" element={<CartesQuery />} />
         </Routes>
       </DonnesPrediction>
     </Router>
