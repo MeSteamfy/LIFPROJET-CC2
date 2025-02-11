@@ -68,9 +68,11 @@ function Prediction(props) {
                                         <div className={styles.headerConteneur}>
                                             <div className={styles.header}>
                                                 <p className={styles.info}>{pokemonData.name}</p>
+                                                
                                                 {/* img du type ici */}
                                             </div>
-                                            <p className={styles.set}>{pokemonData.set}</p>
+                                            
+                                            <p className={styles.type}>type : {pokemonData.type}</p>
                                         </div>
 
                                         <div className={styles.futurePrix}>
