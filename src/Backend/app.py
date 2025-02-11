@@ -45,7 +45,8 @@ def getSetById(id):
                     'name': card.name,
                     'rarity': card.rarity,
                     'set': card.set,
-                    'images': card.images
+                    'images': card.images,
+                    
                 }
                 tabCartes.append(card_dict) 
 
