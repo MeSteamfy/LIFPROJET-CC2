@@ -40,12 +40,14 @@ def getSetById(id):
             cardID = f'{id}-{i+1}'
             card = Card.find(cardID)  
             if card: 
+                print(card.nationalPokedexNumbers)
                 card_dict = {
                     'id': card.id, 
                     'name': card.name,
                     'rarity': card.rarity,
                     'set': card.set,
                     'images': card.images,
+                    
                     
                 }
                 tabCartes.append(card_dict) 
@@ -81,7 +83,9 @@ def getPokemon(id):
             'set': card.set.name,
             'rarity': card.rarity,
             'type': card.types,
-            'images': card.images
+            'images': card.images,
+            'nationalPokedexNumbers' : card.nationalPokedexNumbers
+            
         }
         return jsonify(cardData)
 
