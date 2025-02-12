@@ -121,6 +121,7 @@
     margin: 0;
 }
 
+
 .headerConteneur > .set {
     margin: 0;
     color: white;
@@ -150,35 +151,16 @@
 .type {
     color: white;
     font-size: 20px;
-    animation: pulse 2s infinite;
     
 }
 
 .rarity{
     color: white;
     font-size: 20px;   
-    animation: pulse 2s infinite; 
 }
 
 .desc {
     color: white;
     font-size: 20px;
     font-style: oblique 20deg;   
-}
-
-@keyframes pulse {
-    0% {
-        transform: scale(0.95);
-        box-shadow: 0 0 0 0 rgba(91, 243, 248, 0.7);
-    }
-
-    70% {
-        transform: scale(1);
-        box-shadow: 0 0 0 10px rgba(36, 97, 167, 0);
-    }
-
-    100% {
-        transform: scale(0.95);
-        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
-    }
 }
