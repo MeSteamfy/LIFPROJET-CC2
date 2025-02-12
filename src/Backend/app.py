@@ -1,5 +1,6 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
+import tensorflow as tf
 import pokemontcgsdk
 from pokemontcgsdk import Card
 from pokemontcgsdk import Set
@@ -7,9 +8,12 @@ from pokemontcgsdk import Type
 from pokemontcgsdk import Supertype
 from pokemontcgsdk import Subtype
 from pokemontcgsdk import Rarity
+import requests
 
 app = Flask(__name__)
 CORS(app)
+
+# model = tf.keras.models.load_model('predict_price.h5')
 
 @app.route('/')
 def home():
@@ -94,6 +98,25 @@ def getPokemon(id):
             'messageErreur': "Une erreur a été détecté."
         }
         return jsonify(erreur), 500
+    
+#a partir dune id on recupere les prix grace au github et on applique le modele 
+#@app.route('/graphes/<id>')
+#def predict(id):
+#    try:
+#        card = Card.find(id)
+#        id_card = card.id
+#        set_card = card.set.id
+#        url = "lien du github avec le json de la carte"  
+#        response = requests.get(url)    
+#        data = response.json()
+#        prediction = model.predict(data)  
+#        return jsonify({'prediction': prediction.tolist()})
+#
+#    except:
+#        erreur = {
+#            'messageErreur': "Une erreur a été détecté."
+#        }
+#        return jsonify(erreur), 500
 
 if __name__ == '__main__':
     app.run(debug=True)
