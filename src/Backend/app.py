@@ -42,13 +42,8 @@ def getSetById(id):
             if card: 
                 print(card.nationalPokedexNumbers)
                 card_dict = {
-                    'id': card.id, 
-                    'name': card.name,
-                    'rarity': card.rarity,
-                    'set': card.set,
-                    'images': card.images,
-                    
-                    
+                    'id': card.id,
+                    'images': card.images
                 }
                 tabCartes.append(card_dict) 
 
