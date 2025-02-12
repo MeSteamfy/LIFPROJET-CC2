@@ -74,6 +74,8 @@ function Prediction(props) {
                                             
                                             <p className={styles.type}>Type : {pokemonData.type}</p>
                                             <p className={styles.rarity}>rareté : {pokemonData.rarity}</p>
+                                            <p className={styles.rarity}>PokedexNationalNumber : {pokemonData.nationalPokedexNumbers}</p>
+                                           
                                             
                                         </div>
 
