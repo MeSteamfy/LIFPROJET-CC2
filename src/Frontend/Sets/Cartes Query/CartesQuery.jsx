@@ -40,7 +40,7 @@ export default function CartesQuery() {
             if (!chargementOn) updateChargement(true);
 
             try {
-                const backendResponse = await axios.get(`http://localhost:5000/pokemon/search/${pokemonName}`)
+                const backendResponse = await axios.get(`http://localhost:5000/pokemon/search/${decodeURIComponent(pokemonName)}`)
                 updateCartesDisplay(backendResponse.data);
             }
 

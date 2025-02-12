@@ -116,9 +116,14 @@
 .infoConteneur .headerConteneur {
     display: flex;
     justify-content: flex-start;
-    align-items: center;
+    align-items: flex-start;
     flex-direction: column;
+    height: 100%;
     margin: 0;
+}
+
+.headerConteneur .rarity {
+    margin-top: -2em;
 }
 
 

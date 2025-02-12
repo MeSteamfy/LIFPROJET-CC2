@@ -7,6 +7,7 @@ from pokemontcgsdk import Type
 from pokemontcgsdk import Supertype
 from pokemontcgsdk import Subtype
 from pokemontcgsdk import Rarity
+
 app = Flask(__name__)
 CORS(app)
 
@@ -26,7 +27,7 @@ def getAllSets():
         }
         return jsonify(erreur), 500
 
-@app.route('/sets/<id>')
+@app.route('/sets/<id>', methods=['GET'])
 def getSetById(id):
     try:
         tabCartes = []
@@ -35,17 +36,21 @@ def getSetById(id):
             return jsonify({"message": "Set not found"}), 404
         
         nbCartes = set.total
+        limit = 20  # Limite de cartes à retourner à chaque requête
+        page = int(request.args.get('page', 1))  # Page à charger (par défaut page 1)
 
-        for i in range(min(nbCartes, 20)): # l'API est pour l'instant buggé, on limit a 20 le nb de pokémon
+        start = (page - 1) * limit
+        end = start + limit
+
+        for i in range(start, min(end, nbCartes)):
             cardID = f'{id}-{i+1}'
-            card = Card.find(cardID)  
-            if card: 
-                print(card.total)
+            card = Card.find(cardID)
+            if card:
                 card_dict = {
                     'id': card.id,
                     'images': card.images,
                 }
-                tabCartes.append(card_dict) 
+                tabCartes.append(card_dict)
 
         return jsonify(tabCartes)
 
@@ -55,6 +60,7 @@ def getSetById(id):
             'details': str(e)
         }
         return jsonify(erreur), 500
+
 
 @app.route('/pokemon/search/<pokemonName>')
 def getPokemonByName(pokemonName):
@@ -80,10 +86,6 @@ def getPokemon(id):
             'type': card.types,
             'images': card.images,
             'nationalPokedexNumbers' : card.nationalPokedexNumbers,
-            
-            
-            
-            
         }
         return jsonify(cardData)
 

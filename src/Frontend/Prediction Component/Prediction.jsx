@@ -28,7 +28,6 @@ function Prediction(props) {
             try {
                 const backendReponse = await axios.get(`http://localhost:5000/pokemon/${props.pokemonID}`);
                 updatePokemonData(backendReponse.data)
-                console.log(backendReponse.data);
             }
     
             catch(error) {
@@ -67,16 +66,14 @@ function Prediction(props) {
                                     <div className={styles.infoConteneur}>
                                         <div className={styles.headerConteneur}>
                                             <div className={styles.header}>
-                                                <p className={styles.info}>{pokemonData.name}</p>
+                                                <p className={styles.info}>{pokemonData.name} (N° {pokemonData.nationalPokedexNumbers[0]})</p>
+
+                                                <div className={styles.typesConteneur}>
+                                                    {/* img du type ici */}
+                                                </div>
                                                 
-                                                {/* img du type ici */}
                                             </div>
-                                            
-                                            <p className={styles.type}>Type : {pokemonData.type}</p>
-                                            <p className={styles.rarity}>rareté : {pokemonData.rarity}</p>
-                                            <p className={styles.rarity}>PokedexNationalNumber : {pokemonData.nationalPokedexNumbers}- {pokemonData.total}</p>
-                                           
-                                            
+                                            <p className={styles.rarity}>Rareté: {pokemonData.rarity}</p>
                                         </div>
 
                                         <div className={styles.futurePrix}>

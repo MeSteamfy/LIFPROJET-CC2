@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState, useRef } from 'react';
 import { DataContext } from "../../DataContext";
 import styles from './SetCartes.module.css'
 import axios from 'axios';
@@ -8,33 +8,51 @@ import Prediction from '../../Prediction Component/Prediction';
 
 function SetCartes() {
     const { setID } = useParams();
-
-    const { predictionOn, updateSelectPokemon, updatePrediction, pokemonSelect } = useContext(DataContext)
+    const { predictionOn, updateSelectPokemon, updatePrediction, pokemonSelect } = useContext(DataContext);
     const [chargementOn, updateChargement] = useState(true);
     const [cartesDuSet, updateCartesDuSet] = useState([]);
+    const [page, setPage] = useState(1);
+    const [loading, setLoading] = useState(false);
+    const observer = useRef();
 
-    useEffect(() => {
-        async function laod() { // faute de frappe my bad les gars
-            try {
-                const backendReponse = await axios.get(`http://localhost:5000/sets/${setID}`)
-                console.log(backendReponse.data);
-                updateCartesDuSet(backendReponse.data);
-            }
-
-            catch(error) {
-                console.error(error);
-            }
-
-            finally {
-                updateChargement(false);
-            }
+    const fetchCards = async (page) => {
+        setLoading(true);
+        try {
+            const backendReponse = await axios.get(`http://localhost:5000/sets/${setID}?page=${page}`);
+            updateCartesDuSet((prevCards) => [...prevCards, ...backendReponse.data]);
+        } 
+        
+        catch (error) {
+            console.error(error);
+        } 
+        
+        finally {
+            setLoading(false);
         }
-        laod()
-    }, []);
+    };
+
 
     useEffect(() => {
-        if (predictionOn) updatePrediction(false);
-    }, []);
+        fetchCards(page);
+    }, [page]);
+
+    const lastCardElementRef = useRef((node) => {
+        if (loading) return;
+
+        if (observer.current) observer.current.disconnect();
+
+        observer.current = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) {
+                setPage((prevPage) => prevPage + 1); 
+            }
+        });
+
+        if (node) observer.current.observe(node);
+    });
+
+    useEffect(() => {
+        updateChargement(false);
+    }, [cartesDuSet]);
 
     function openCarte(pokemonID) {
         updateSelectPokemon(pokemonID);
@@ -48,18 +66,30 @@ function SetCartes() {
             </h1>
             {chargementOn ? <Chargement /> : (
                 <div className={styles.cartesDisplay}>
-                    {cartesDuSet.map((carte, index) => (
-                        <div onClick={() => openCarte(carte.id)} key={index} className={styles.set}>
-                            <img className={styles.image} src={carte.images.small}></img>
-                        </div>
-                    ))}
+                    {cartesDuSet.map((carte, index) => {
+                        if (cartesDuSet.length === index + 1) {
+                            return (
+                                <div ref={lastCardElementRef} onClick={() => openCarte(carte.id)} key={carte.id} className={styles.set}>
+                                    <img className={styles.image} src={carte.images.small} alt={`Carte ${carte.id}`} />
+                                </div>
+                            );
+                        } 
+                        
+                        else {
+                            return (
+                                <div onClick={() => openCarte(carte.id)} key={carte.id} className={styles.set}>
+                                    <img className={styles.image} src={carte.images.small} alt={`Carte ${carte.id}`} />
+                                </div>
+                            );
+                        }
+                    })}
                 </div>
             )}
 
+            {loading && <Chargement />} 
             {predictionOn && <Prediction pokemonID={pokemonSelect} />}
-            
         </div>
-    )
+    );
 }
 
 export default SetCartes;
