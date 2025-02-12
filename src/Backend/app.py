@@ -41,12 +41,8 @@ def getSetById(id):
             card = Card.find(cardID)  
             if card: 
                 card_dict = {
-                    'id': card.id, 
-                    'name': card.name,
-                    'rarity': card.rarity,
-                    'set': card.set,
+                    'id': card.id,
                     'images': card.images,
-                    
                 }
                 tabCartes.append(card_dict) 
 
