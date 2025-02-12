@@ -42,21 +42,8 @@ def getSetById(id):
             if card: 
                 print(card.total)
                 card_dict = {
-<<<<<<< HEAD
-                    'id': card.id, 
-                    'name': card.name,
-                    'rarity': card.rarity,
-                    'set': card.set,
-                    'images': card.images,
-                    
-                    
-                    
-                    
-                    
-=======
                     'id': card.id,
-                    'images': card.images
->>>>>>> 00089f127c1a1f104678e543636125131d3cc4e0
+                    'images': card.images,
                 }
                 tabCartes.append(card_dict) 
 
