@@ -1,7 +1,8 @@
-import { useContext, useEffect, useState, useRef } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { DataContext } from "../../DataContext";
 import styles from './SetCartes.module.css'
 import axios from 'axios';
+
 import { useParams } from 'react-router-dom';
 import Chargement from '../../Chargement/Chargement'
 import Prediction from '../../Prediction Component/Prediction';
@@ -11,15 +12,12 @@ function SetCartes() {
     const { predictionOn, updateSelectPokemon, updatePrediction, pokemonSelect } = useContext(DataContext);
     const [chargementOn, updateChargement] = useState(true);
     const [cartesDuSet, updateCartesDuSet] = useState([]);
-    const [page, setPage] = useState(1);
-    const [loading, setLoading] = useState(false);
-    const observer = useRef();
 
-    const fetchCards = async (page) => {
-        setLoading(true);
+    const fetchCards = async () => {
+        updateChargement(true);
         try {
-            const backendReponse = await axios.get(`http://localhost:5000/sets/${setID}?page=${page}`);
-            updateCartesDuSet((prevCards) => [...prevCards, ...backendReponse.data]);
+            const backendReponse = await axios.get(`http://localhost:5000/sets/${setID}`);
+            updateCartesDuSet(backendReponse.data);
         } 
         
         catch (error) {
@@ -27,32 +25,13 @@ function SetCartes() {
         } 
         
         finally {
-            setLoading(false);
+            updateChargement(false);
         }
     };
 
-
     useEffect(() => {
-        fetchCards(page);
-    }, [page]);
-
-    const lastCardElementRef = useRef((node) => {
-        if (loading) return;
-
-        if (observer.current) observer.current.disconnect();
-
-        observer.current = new IntersectionObserver((entries) => {
-            if (entries[0].isIntersecting) {
-                setPage((prevPage) => prevPage + 1); 
-            }
-        });
-
-        if (node) observer.current.observe(node);
-    });
-
-    useEffect(() => {
-        updateChargement(false);
-    }, [cartesDuSet]);
+        fetchCards()
+    }, [])
 
     function openCarte(pokemonID) {
         updateSelectPokemon(pokemonID);
@@ -66,27 +45,17 @@ function SetCartes() {
             </h1>
             {chargementOn ? <Chargement /> : (
                 <div className={styles.cartesDisplay}>
-                    {cartesDuSet.map((carte, index) => {
-                        if (cartesDuSet.length === index + 1) {
-                            return (
-                                <div ref={lastCardElementRef} onClick={() => openCarte(carte.id)} key={carte.id} className={styles.set}>
-                                    <img className={styles.image} src={carte.images.small} alt={`Carte ${carte.id}`} />
-                                </div>
-                            );
-                        } 
-                        
-                        else {
-                            return (
-                                <div onClick={() => openCarte(carte.id)} key={carte.id} className={styles.set}>
-                                    <img className={styles.image} src={carte.images.small} alt={`Carte ${carte.id}`} />
-                                </div>
-                            );
-                        }
-                    })}
+                    { cartesDuSet.length === 0 ? (
+                        <p className={styles.noResults}>
+                            Aucun résultat pour le set avec l'ID: {setID.toLocaleUpperCase()}
+                        </p>
+                    ) : cartesDuSet.map((carte, index) => (
+                        <div onClick={() => openCarte(carte.id)} className={styles.carte} key={index}>
+                            <img src={carte.images.small} className={styles.image} />
+                        </div>
+                    ))}
                 </div>
             )}
-
-            {loading && <Chargement />} 
             {predictionOn && <Prediction pokemonID={pokemonSelect} />}
         </div>
     );

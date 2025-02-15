@@ -31,32 +31,16 @@ def getAllSets():
         }
         return jsonify(erreur), 500
 
-@app.route('/sets/<id>', methods=['GET'])
+@app.route('/sets/<id>')
 def getSetById(id):
     try:
-        tabCartes = []
         set = Set.find(id)
         if not set:
-            return jsonify({"message": "Set not found"}), 404
+            return jsonify({"message": "Aucun set a été trouvé"}), 404
         
-        nbCartes = set.total
-        limit = 20  # Limite de cartes à retourner à chaque requête
-        page = int(request.args.get('page', 1))  # Page à charger (par défaut page 1)
+        cards = Card.where(q=f'set.id:"{set.id}"')
 
-        start = (page - 1) * limit
-        end = start + limit
-
-        for i in range(start, min(end, nbCartes)):
-            cardID = f'{id}-{i+1}'
-            card = Card.find(cardID)
-            if card:
-                card_dict = {
-                    'id': card.id,
-                    'images': card.images,
-                }
-                tabCartes.append(card_dict)
-
-        return jsonify(tabCartes)
+        return jsonify(cards)
 
     except Exception as e:
         erreur = {
@@ -64,7 +48,6 @@ def getSetById(id):
             'details': str(e)
         }
         return jsonify(erreur), 500
-
 
 @app.route('/pokemon/search/<pokemonName>')
 def getPokemonByName(pokemonName):
@@ -117,6 +100,16 @@ def getPokemon(id):
 #            'messageErreur': "Une erreur a été détecté."
 #        }
 #        return jsonify(erreur), 500
+
+# Route callback qui empêche l'erreur par défaut de Flask
+# c'est comme event.preventDefault() et c'est nous qui gérons l'erreur ici
+@app.errorhandler(500)
+def internal_server_error(e):
+    return jsonify({
+        'messageErreur': "Internal Server Error",
+        'details': str(e)
+    }), 500
+
 
 if __name__ == '__main__':
     app.run(debug=True)

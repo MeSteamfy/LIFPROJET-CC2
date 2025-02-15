@@ -30,17 +30,24 @@
     width: 95%;
 }
 
-.cartesDisplay .set {
+.cartesDisplay .noResults {
+    font-size: 1.5em;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+}
+
+.cartesDisplay .carte {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.set .image {
+.carte .image {
     cursor: pointer;
     transition: transform 0.3s ease-in-out;
 }
 
-.set .image:hover {
+.carte .image:hover {
     transform: scale(1.1);
 }
