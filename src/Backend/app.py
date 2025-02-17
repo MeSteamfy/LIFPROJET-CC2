@@ -1,6 +1,5 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
-import tensorflow as tf
 import pokemontcgsdk
 from pokemontcgsdk import Card
 from pokemontcgsdk import Set
