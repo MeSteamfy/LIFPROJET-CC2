@@ -68,13 +68,13 @@ function Prediction(props) {
                                         <div className={styles.headerConteneur}>
                                             <div className={styles.header}>
                                                 <p className={styles.info}>
-                                                    {pokemonData.name} {' '}
+                                                    {pokemonData.name}{' '}
                                                     {pokemonData.nationalPokedexNumbers && <span className={styles.nationalNumber}>(N° {pokemonData.nationalPokedexNumbers[0]})</span>}
                                                 </p>
 
                                                 {pokemonData.type && (
                                                     <div className={styles.types}>
-                                                        <img className={styles.typeImage} src={`/${pokemonData.type[0]}.png`}/>
+                                                        <img className={styles.typeImage} src={`/types/${pokemonData.type[0]}.png`} alt={`${pokemonData.type[0]}`}/>
                                                     </div>
                                                 )}
                                             </div>
