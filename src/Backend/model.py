@@ -7,74 +7,126 @@ import pickle
 import app
 import requests
 
-def get_card_data(card_ids):
-    base_url = "https://raw.githubusercontent.com/tcgdex/price-history/master/en/base1/{}.tcgplayer.json"
-    all_data = []
-    
-    for card_id in card_ids:
-        url = base_url.format(card_id)
-        response = requests.get(url)
-        if response.status_code == 200:
-            card_data = response.json()
-            card_data = card_data["data"]["holo-good"]["history"]
+token = "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"
+headers = {
+    "Authorization": f"Bearer {token}",
+    "Accept": "application/vnd.github.v3+json"
+}
 
-            card_records = [
-                {
-                    'card_id': card_id,
-                    'date': item,
-                    'price': card_data[item]["avg"]
-                }
-                for item in card_data
-            ]
-            all_data.extend(card_records)
 
-    df = pd.DataFrame(all_data)
+def get_all_extensions():
+    global headers
+    url = "https://api.github.com/repos/tcgdex/price-history/contents/en"
+    response = requests.get(url, headers=headers)
+    print('setsfs')
+    if response.status_code == 200:
+        contenu = response.json()
+        extensions = [item['name'] for item in contenu]
+        extensions.pop()
+        return extensions
+    else:
+        print(f"Erreur : Impossible de récupérer les éléments (code {response.status_code})")
 
-    df['date'] = pd.to_datetime(df['date'])
-    df['year'] = df['date'].dt.year
-    df['month'] = df['date'].dt.month
-    df['day'] = df['date'].dt.day
+
+def get_extension(ext):
+    global headers
+    base_url = "https://api.github.com/repos/tcgdex/price-history/contents/en/{}"
+    url = base_url.format(ext)
+    response = requests.get(url, headers=headers)
+
+    if response.status_code == 200:
+        contenu = response.json()
+        cards = [item['name'] for item in contenu]
+        return cards
+    else:
+        print(f"Erreur : Impossible de récupérer les éléments (code {response.status_code})")
+
+
+def get_card_data():
+    global headers
+    extensions = get_all_extensions()
+    for extension in extensions:
+        cards = get_extension(extension)
+        base_url = "https://raw.githubusercontent.com/tcgdex/price-history/master/en/{}/{}"
+        all_data = []
+        
+        for card in cards:
+            url = base_url.format(extension,card)
+            response = requests.get(url, headers=headers)
+            if response.status_code == 200:
+                card_data = response.json()
+                states = [item for item in card_data["data"]]
+                for state in states:
+                    card_data_state = card_data['data'][state]["history"]
+                    card_records = [
+                        {
+                            'extension': extension,
+                            'card_id': card.split('.')[0],
+                            'state': state,
+                            'date': item,
+                            'price': card_data_state[item]["avg"]
+                        }
+                        for item in card_data_state
+                    ]
+                    all_data.extend(card_records)
+            else:
+                print(f"Erreur : Impossible de récupérer les éléments (code {response.status_code})")
+            print(extension + "   " +card)
+        df = pd.DataFrame(all_data)
+
+        df['date'] = pd.to_datetime(df['date'])
+        df['year'] = df['date'].dt.year
+        df['month'] = df['date'].dt.month
+        df['day'] = df['date'].dt.day
     return df
 
-card_ids = [] 
-for i in range(100):
-    card_ids.append(str(i))
-
-df = get_card_data(card_ids)
+df = get_card_data()
 
 print(df)
 predict = "price"
 
-X = df[['card_id', 'year', 'month', 'day']]
+X = df[['card_id', 'year', 'month', 'day', 'extension', 'state']]
 y = df[predict]
-
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+best = 0
+for _ in range (10):
 
-scaler = StandardScaler()
-X_train_scaled = scaler.fit_transform(X_train)
-X_test_scaled = scaler.transform(X_test)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-model = RandomForestRegressor(n_estimators=100, random_state=42)
-model.fit(X_train_scaled, y_train)
+    scaler = StandardScaler()
+    X_train_scaled = scaler.fit_transform(X_train)
+    X_test_scaled = scaler.transform(X_test)
 
-train_score = model.score(X_train_scaled, y_train)
-test_score = model.score(X_test_scaled, y_test)
+    model = RandomForestRegressor(n_estimators=100, random_state=42)
+    model.fit(X_train_scaled, y_train)
+
+    train_score = model.score(X_train_scaled, y_train)
+    test_score = model.score(X_test_scaled, y_test)
+    if test_score > best :
+        best = test_score
+        with open("pokemon.pickle", "wb") as f:
+            pickle.dump(model, f)
+
+pickle_in = open("pokemon.pickle", "rb")
+linear = pickle.load(pickle_in)
 
 print(f"Score d'entrainement: {train_score:.3f}")
 print(f"Score de test: {test_score:.3f}")
 
-def predict_price(card_id, date):
-    date = pd.to_datetime(date)
-    input_data = pd.DataFrame({
-        'card_id': [card_id],
-        'year': [date.year],
-        'month': [date.month],
-        'day': [date.day]
-    })
-    input_scaled = scaler.transform(input_data)
-    return model.predict(input_scaled)[0]
+# def predict_price(card_id, date, ext, state):
+#     date = pd.to_datetime(date)
+#     input_data = pd.DataFrame({
+#         'card_id': [card_id],
+#         'extension': [ext],
+#         'state': [state],
+#         'year': [date.year],
+#         'month': [date.month],
+#         'day': [date.day]
+#     })
+#     input_scaled = scaler.transform(input_data)
+#     return model.predict(input_scaled)[0]
 
-future_date = "2024-09-19"
-card_id = 1
-predicted_price = predict_price(card_id, future_date)
-print(f"Prix predit pour la carte d'id {card_id} le {future_date}: {predicted_price:.2f}$")
+# future_date = "2024-09-19"
+# card_id = 1
+# predicted_price = predict_price(card_id, future_date, "2011bw", "holo-good")
+# print(f"Prix predit pour la carte d'id {card_id} le {future_date}: {predicted_price:.2f}$")
