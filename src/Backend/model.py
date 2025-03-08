@@ -1,8 +1,9 @@
 import pandas as pd
 import numpy as np 
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler, LabelEncoder
 from sklearn.ensemble import RandomForestRegressor
+import joblib
 import pickle
 import app
 import requests
@@ -18,11 +19,9 @@ def get_all_extensions():
     global headers
     url = "https://api.github.com/repos/tcgdex/price-history/contents/en"
     response = requests.get(url, headers=headers)
-    print('setsfs')
     if response.status_code == 200:
         contenu = response.json()
         extensions = [item['name'] for item in contenu]
-        extensions.pop()
         return extensions
     else:
         print(f"Erreur : Impossible de récupérer les éléments (code {response.status_code})")
@@ -45,15 +44,15 @@ def get_extension(ext):
 def get_card_data():
     global headers
     extensions = get_all_extensions()
+    all_data = []
     for extension in extensions:
         cards = get_extension(extension)
         base_url = "https://raw.githubusercontent.com/tcgdex/price-history/master/en/{}/{}"
-        all_data = []
         
         for card in cards:
             url = base_url.format(extension,card)
             response = requests.get(url, headers=headers)
-            if response.status_code == 200:
+            if (response.status_code == 200):
                 card_data = response.json()
                 states = [item for item in card_data["data"]]
                 for state in states:
@@ -63,7 +62,7 @@ def get_card_data():
                             'extension': extension,
                             'card_id': card.split('.')[0],
                             'state': state,
-                            'date': item,
+                            'date': item,                                
                             'price': card_data_state[item]["avg"]
                         }
                         for item in card_data_state
@@ -71,13 +70,13 @@ def get_card_data():
                     all_data.extend(card_records)
             else:
                 print(f"Erreur : Impossible de récupérer les éléments (code {response.status_code})")
-            print(extension + "   " +card)
-        df = pd.DataFrame(all_data)
+            print(extension + "   " + card)
+    df = pd.DataFrame(all_data)
 
-        df['date'] = pd.to_datetime(df['date'])
-        df['year'] = df['date'].dt.year
-        df['month'] = df['date'].dt.month
-        df['day'] = df['date'].dt.day
+    df['date'] = pd.to_datetime(df['date'])
+    df['year'] = df['date'].dt.year
+    df['month'] = df['date'].dt.month
+    df['day'] = df['date'].dt.day
     return df
 
 df = get_card_data()
@@ -87,46 +86,65 @@ predict = "price"
 
 X = df[['card_id', 'year', 'month', 'day', 'extension', 'state']]
 y = df[predict]
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+labelEncoder_card = LabelEncoder()
+labelEncoder_ext = LabelEncoder()
+labelEncoder_sta = LabelEncoder()
+X.loc[:, 'card_id'] = labelEncoder_card.fit_transform(X['card_id'])
+X.loc[:, 'extension'] = labelEncoder_ext.fit_transform(X['extension'])
+X.loc[:, 'state'] = labelEncoder_sta.fit_transform(X['state'])
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=42)
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)
+
 best = 0
-for _ in range (10):
-
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-
+for _ in range (2):
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=42)
     scaler = StandardScaler()
     X_train_scaled = scaler.fit_transform(X_train)
     X_test_scaled = scaler.transform(X_test)
-
-    model = RandomForestRegressor(n_estimators=100, random_state=42)
+    model = RandomForestRegressor(n_estimators=100, max_depth=20)
     model.fit(X_train_scaled, y_train)
 
     train_score = model.score(X_train_scaled, y_train)
     test_score = model.score(X_test_scaled, y_test)
+    print(test_score)
     if test_score > best :
         best = test_score
-        with open("pokemon.pickle", "wb") as f:
-            pickle.dump(model, f)
+        with open("src/Backend/pokemon.pickle", "wb") as f:
+            pickle.dump((model, labelEncoder_card, labelEncoder_ext, labelEncoder_sta, scaler), f)
+        # joblib.dump((model, labelEncoder_card, labelEncoder_ext, labelEncoder_sta, scaler), "src/Backend/pokemon.joblib", compress=3)  
 
-pickle_in = open("pokemon.pickle", "rb")
-linear = pickle.load(pickle_in)
+with open("src/Backend/pokemon.pickle", "rb") as f:
+    model, labelEncoder_card, labelEncoder_ext, labelEncoder_sta, scaler = pickle.load(f)
 
-print(f"Score d'entrainement: {train_score:.3f}")
-print(f"Score de test: {test_score:.3f}")
+# model, labelEncoder_card, labelEncoder_ext, labelEncoder_sta, scaler = joblib.load("src/Backend/pokemon.joblib")
 
-# def predict_price(card_id, date, ext, state):
-#     date = pd.to_datetime(date)
-#     input_data = pd.DataFrame({
-#         'card_id': [card_id],
-#         'extension': [ext],
-#         'state': [state],
-#         'year': [date.year],
-#         'month': [date.month],
-#         'day': [date.day]
-#     })
-#     input_scaled = scaler.transform(input_data)
-#     return model.predict(input_scaled)[0]
+# print(f"Score d'entrainement: {train_score:.3f}")
+# print(f"Score de test: {test_score:.3f}")
 
-# future_date = "2024-09-19"
-# card_id = 1
-# predicted_price = predict_price(card_id, future_date, "2011bw", "holo-good")
-# print(f"Prix predit pour la carte d'id {card_id} le {future_date}: {predicted_price:.2f}$")
+def predict_price(card_id, date, ext, state):
+    date = pd.to_datetime(date)
+    input_data = pd.DataFrame({
+        'card_id': [card_id],
+        'year': [date.year],
+        'month': [date.month],
+        'day': [date.day],
+        'extension': [ext],
+        'state': [state]
+
+    })
+    input_data['card_id'] = labelEncoder_card.transform(input_data['card_id'])
+    input_data['extension'] = labelEncoder_ext.transform(input_data['extension'])
+    input_data['state'] = labelEncoder_sta.transform(input_data['state'])
+    input_scaled = scaler.transform(input_data)
+    return model.predict(input_scaled)[0]
+
+future_date = "2024-09-19"
+card_id = "1"
+extension = "xy0"
+state = "normal-good"
+predicted_price = predict_price(card_id, future_date, extension, state)
+print(f"Prix predit pour la carte du set {extension} d'id {card_id} {state} le {future_date}: {predicted_price/100:.2f}$")
