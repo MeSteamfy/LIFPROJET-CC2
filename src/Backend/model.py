@@ -3,7 +3,6 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler, LabelEncoder
 from sklearn.ensemble import RandomForestRegressor
-import joblib
 import pickle
 import app
 import requests
@@ -100,7 +99,7 @@ X_train_scaled = scaler.fit_transform(X_train)
 X_test_scaled = scaler.transform(X_test)
 
 best = 0
-for _ in range (2):
+for _ in range (20):
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=42)
     scaler = StandardScaler()
     X_train_scaled = scaler.fit_transform(X_train)
@@ -114,13 +113,10 @@ for _ in range (2):
     if test_score > best :
         best = test_score
         with open("src/Backend/pokemon.pickle", "wb") as f:
-            pickle.dump((model, labelEncoder_card, labelEncoder_ext, labelEncoder_sta, scaler), f)
-        # joblib.dump((model, labelEncoder_card, labelEncoder_ext, labelEncoder_sta, scaler), "src/Backend/pokemon.joblib", compress=3)  
+            pickle.dump((model, labelEncoder_card, labelEncoder_ext, labelEncoder_sta, scaler), f)  
 
 with open("src/Backend/pokemon.pickle", "rb") as f:
     model, labelEncoder_card, labelEncoder_ext, labelEncoder_sta, scaler = pickle.load(f)
-
-# model, labelEncoder_card, labelEncoder_ext, labelEncoder_sta, scaler = joblib.load("src/Backend/pokemon.joblib")
 
 # print(f"Score d'entrainement: {train_score:.3f}")
 # print(f"Score de test: {test_score:.3f}")
