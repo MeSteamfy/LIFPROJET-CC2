@@ -141,7 +141,7 @@ function Sets() {
                 
                 {!chargement && filteredSets.map((series) => (
                     <div key={series.key}>
-                        <h1 onClick={() => console.log(setsData[series.key])} className={styles.setTitle}>{series.name}</h1>
+                        <h1 className={styles.setTitle}>{series.name}</h1>
                         <div className={styles.setDisplay}>
                             {setsData[series.key].map((set, index) => (
                                 <div onClick={() => navigate(`/sets/${set.id}`)} className={styles.set} key={index}>
