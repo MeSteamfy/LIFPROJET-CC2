@@ -78,42 +78,42 @@ def get_card_data():
     df['day'] = df['date'].dt.day
     return df
 
-df = get_card_data()
+# df = get_card_data()
 
-print(df)
-predict = "price"
+# print(df)
+# predict = "price"
 
-X = df[['card_id', 'year', 'month', 'day', 'extension', 'state']]
-y = df[predict]
+# X = df[['card_id', 'year', 'month', 'day', 'extension', 'state']]
+# y = df[predict]
 
-labelEncoder_card = LabelEncoder()
-labelEncoder_ext = LabelEncoder()
-labelEncoder_sta = LabelEncoder()
-X.loc[:, 'card_id'] = labelEncoder_card.fit_transform(X['card_id'])
-X.loc[:, 'extension'] = labelEncoder_ext.fit_transform(X['extension'])
-X.loc[:, 'state'] = labelEncoder_sta.fit_transform(X['state'])
+# labelEncoder_card = LabelEncoder()
+# labelEncoder_ext = LabelEncoder()
+# labelEncoder_sta = LabelEncoder()
+# X.loc[:, 'card_id'] = labelEncoder_card.fit_transform(X['card_id'])
+# X.loc[:, 'extension'] = labelEncoder_ext.fit_transform(X['extension'])
+# X.loc[:, 'state'] = labelEncoder_sta.fit_transform(X['state'])
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1)
-scaler = StandardScaler()
-X_train_scaled = scaler.fit_transform(X_train)
-X_test_scaled = scaler.transform(X_test)
+# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1)
+# scaler = StandardScaler()
+# X_train_scaled = scaler.fit_transform(X_train)
+# X_test_scaled = scaler.transform(X_test)
 
-best = 0
-for _ in range (20):
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=_)
-    scaler = StandardScaler()
-    X_train_scaled = scaler.fit_transform(X_train)
-    X_test_scaled = scaler.transform(X_test)
-    model = RandomForestRegressor(n_estimators=100, max_depth=20)
-    model.fit(X_train_scaled, y_train)
+# best = 0
+# for _ in range (20):
+#     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=_)
+#     scaler = StandardScaler()
+#     X_train_scaled = scaler.fit_transform(X_train)
+#     X_test_scaled = scaler.transform(X_test)
+#     model = RandomForestRegressor(n_estimators=100, max_depth=20)
+#     model.fit(X_train_scaled, y_train)
 
-    train_score = model.score(X_train_scaled, y_train)
-    test_score = model.score(X_test_scaled, y_test)
-    print(test_score)
-    if test_score > best :
-        best = test_score
-        with open("src/Backend/pokemon.pickle", "wb") as f:
-            pickle.dump((model, labelEncoder_card, labelEncoder_ext, labelEncoder_sta, scaler), f)  
+#     train_score = model.score(X_train_scaled, y_train)
+#     test_score = model.score(X_test_scaled, y_test)
+#     print(test_score)
+#     if test_score > best :
+#         best = test_score
+#         with open("src/Backend/pokemon.pickle", "wb") as f:
+#             pickle.dump((model, labelEncoder_card, labelEncoder_ext, labelEncoder_sta, scaler), f)  
 
 with open("src/Backend/pokemon.pickle", "rb") as f:
     model, labelEncoder_card, labelEncoder_ext, labelEncoder_sta, scaler = pickle.load(f)
@@ -139,7 +139,7 @@ def predict_price(card_id, date, ext, state):
     return model.predict(input_scaled)[0]
 
 future_date = "2024-09-19"
-card_id = "1"
+card_id = "4"
 extension = "xy0"
 state = "normal-good"
 predicted_price = predict_price(card_id, future_date, extension, state)
