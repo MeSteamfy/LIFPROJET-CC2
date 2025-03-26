@@ -1,5 +1,8 @@
 # PoketchAPI
 
+## Description
+**PoketchAPI** est une application web utilisant une **Intelligence Artificielle** pour prédire le prix des cartes Pokémon dans le futur. Cette application possède toutes les cartes de la série Pokémon TCG de 1996 jusqu'à 2025.
+
 ## Dépendances
 
 ### Frontend (JavaScript)
