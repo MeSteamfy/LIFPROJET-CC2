@@ -28,7 +28,6 @@ function Prediction(props) {
             try {
                 const backendReponse = await axios.get(`http://localhost:5000/pokemon/${props.pokemonID}`);
                 updatePokemonData(backendReponse.data)
-                console.log(backendReponse.data)
             }
     
             catch(error) {
