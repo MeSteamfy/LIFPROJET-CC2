@@ -20,6 +20,12 @@ Le backend utilise Flask ainsi que d'autres bibliothèques Python pour gérer le
 pip install flask, flask_cors, pokemontcgsdk, scikit-learn, numpy, pandas
 ```
 
+Sachant que notre IA a été entrainé pendant de nombreux jours, il est important que vous ayiez les données les plus récentes. Pour cela, vous pouvez télécharger la version la plus récente de notre IA [ici](https://www.mediafire.com/file/w0hr7lxc5dlmt9b/pokemon.pickle/file) ou lancer la commande suivante pour créer l'IA:
+```bash
+python3 src/Backend/model.py # Peut prendre plusieurs heures
+```
+Il est important que le fichier ``pokemon.pickle`` soit dans le dossier [Backend](./src/Backend/)
+
 ## Lancement
 Pour lancer le projet, lancez la commande suivante qui lancera le Frontend et le Backend en même temps.
 ```bash
