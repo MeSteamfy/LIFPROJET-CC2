@@ -30,8 +30,6 @@ function App() {
 }
 
 function PoketchAPI() {
-  const { predictionOn } = useContext(DataContext);
-
   return (
     <>
       <Main />
@@ -39,8 +37,6 @@ function PoketchAPI() {
       <JSONSection />
       <Transition styles="jsonFooter" />
       <Footer />
-
-      {predictionOn && <Prediction />}
     </>
   );
 }

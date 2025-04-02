@@ -1,10 +1,13 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useContext } from 'react';
 import styles from './Sets.module.css'; 
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Chargement from '../Chargement/Chargement'
+import { DataContext } from '../DataContext';
 
 function Sets() {
+    const {predictionOn, updatePrediction} = useContext(DataContext);
+
     const navigate = useNavigate()
 
     const iconRef = useRef(null);
@@ -88,6 +91,11 @@ function Sets() {
             }
         }
         getAllSets();
+    }, []);
+
+    useEffect(() => {
+        // Si la carte de prediction est ouvert, alors on ferme directement pour éviter un bug qui fait que la carte s'affiche directement après que 
+        if (predictionOn) updatePrediction(false);
     }, []);
 
     const seriesList = [

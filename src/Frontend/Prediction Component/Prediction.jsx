@@ -1,7 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useContext } from "react";
 import styles from "./Prediction.module.css"
 import { DataContext } from "../DataContext";
-import { useContext } from "react";
 import axios from "axios";
 import Chargement from "../Chargement/Chargement";
 
