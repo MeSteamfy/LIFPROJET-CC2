@@ -21,24 +21,26 @@ function Prediction(props) {
     }
 
     useEffect(() => {
-        if (!props.pokemonID) fermePage();
-
-        const getPokemonInfo = async () => {
-            try {
-                const backendReponse = await axios.get(`http://localhost:5000/pokemon/${props.pokemonID}`);
-                updatePokemonData(backendReponse.data)
+        if (props.pokemonID) {
+            const getPokemonInfo = async () => {
+                try {
+                    const backendReponse = await axios.get(`http://localhost:5000/pokemon/${props.pokemonID}`);
+                    updatePokemonData(backendReponse.data)
+                }
+        
+                catch(error) {
+                    console.error(error);
+                }
+        
+                finally {
+                    updateChargement(false);
+                }
             }
     
-            catch(error) {
-                console.error(error);
-            }
-    
-            finally {
-                updateChargement(false);
-            }
+            getPokemonInfo();
         }
 
-        getPokemonInfo();
+        else fermePage();
     }, []);
 
     useEffect(() => {
