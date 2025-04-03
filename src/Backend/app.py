@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 import pokemontcgsdk
 from pokemontcgsdk import Card
@@ -62,33 +62,33 @@ def getPokemonByName(pokemonName):
         return jsonify(erreur), 500
 
 
-#@app.route('/pokemon/prediction/<id>')
+@app.route('/pokemon/prediction/<id>')
 def predictPokemonCard(id):
-    # Test Route: /pokemon/prediction/123?date=2024-04-03&extension=Base%20Set&state=Near%20Mint
+    # Test Route: http://localhost:5000/pokemon/prediction/4?date=%222024-09-19%22&extension=%22xy0%22&state=%22normal-good%22
 
     try:
-        card = Card.find(id)  # Récupère les informations de la carte par ID
+        ext = request.args.get('extension') 
+        newID = f"{ext}-{id}"
+
+        card = Card.find(newID)
         if not card:
             return jsonify({"error": "Carte non trouvée"}), 404
 
-        date = request.args.get('date')  # Récupère la date en paramètre
-        ext = request.args.get('extension')  # Récupère l'extension en paramètre
-        state = request.args.get('state')  # Récupère l'état en paramètre
+        date = request.args.get('date')
+        
+        state = request.args.get('state')
 
         if not all([date, ext, state]):
             return jsonify({"error": "Paramètres manquants"}), 400
 
-        # Charger le modèle uniquement lorsque nécessaire
         model, labelEncoder_card, labelEncoder_ext, labelEncoder_sta, scaler = load_model()
 
-        # Utiliser la fonction de prédiction dans model.py
         predicted_price = predict_price(id, date, ext, state, model, labelEncoder_card, labelEncoder_ext, labelEncoder_sta, scaler)
 
         return jsonify({
-            "id": id,
-            "extension": ext,
-            "state": state,
-            "predicted_price": predicted_price
+            "cardID": newID,
+            "predicted_price": predicted_price,
+            "date": date
         })
 
     except Exception as e:

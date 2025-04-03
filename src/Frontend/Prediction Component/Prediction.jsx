@@ -6,11 +6,19 @@ import Chargement from "../Chargement/Chargement";
 
 function Prediction(props) {
     const conteneurRef = useRef(null);
+    const predictTextRef = useRef(null);
 
     const {predictionOn, updatePrediction, pokemonSelect} = useContext(DataContext);
 
     const [chargement, updateChargement] = useState(true);
+    const [chargementPredict, updateChargementPredict] = useState(true);
     const [pokemonData, updatePokemonData] = useState([]);
+    const [selectedOption, setSelectedOption] = useState(null);
+    const anneeTableau = ["2022","2023","2024","2025","2026","2027"];
+
+    const handleChange = (e) => {
+      setSelectedOption(e.target.value);
+    };
 
     function fermePage() {
         conteneurRef.current.classList.replace(styles.apparait, styles.disparait);
@@ -52,6 +60,17 @@ function Prediction(props) {
         return () => document.removeEventListener("click", cliqueEnDehors);
     }, [])
 
+    useEffect(() => {
+        const testAPICall = () => {
+            // ici on met l'appel axios avec try catch et tout le tralala
+
+            setTimeout(() => {
+                updateChargementPredict(false);
+            }, 5000)
+        }
+        testAPICall()
+    }, []);
+
     return (
         <>
             { predictionOn && (
@@ -82,11 +101,32 @@ function Prediction(props) {
                                             <p className={styles.rarity}>
                                                 Rareté: {pokemonData.rarity}
                                             </p>
-                                            
                                         </div>
 
                                         <div className={styles.futurePrix}>
+                                            <div className={styles.radioContainer}>
+                                                {anneeTableau.map((val, index) => (
+                                                    <label key={index} className={styles.customRadio}>
+                                                        <input type="radio" name="anneeChoix" value={val} checked={selectedOption === val} onChange={handleChange} />
+                                                        <span className={styles.radioBtn}></span>
+                                                        {val}
+                                                    </label>
+                                                ))}
+                                            </div>
+                                            
+                                            { chargementPredict ? (
+                                                <div className={styles.chargementPredictContainer}>
+                                                    <Chargement />
 
+                                                    <p ref={predictTextRef} className={styles.predictTextInfo}>
+
+                                                    </p>
+                                                </div>
+                                            ) : (
+                                                <div className={styles.test}>
+
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 </div>

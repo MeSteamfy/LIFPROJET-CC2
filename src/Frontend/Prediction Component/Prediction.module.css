@@ -109,6 +109,7 @@
     align-items: flex-start;
     flex-direction: column;
     height: 100%;
+    width: 100%;
     overflow-y: auto;
     overflow-x: hidden;
 }
@@ -160,10 +161,15 @@
     flex: 1;
 }
 
+.futurePrix .test {
+    background-color: red;
+    width: 100%;
+    height: 100%;
+}
+
 .type {
     color: white;
     font-size: 20px;
-    
 }
 
 .rareteConteneur {
@@ -183,3 +189,57 @@
     font-size: 20px;
     font-style: oblique 20deg;   
 }
+
+.radioContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .customRadio input[type="radio"] {
+    display: none;
+  }
+  
+  .customRadio .radioBtn {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid #3498db;
+    display: inline-block;
+    position: relative;
+    margin-right: 10px;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+  }
+  
+  .customRadio input[type="radio"]:checked + .radioBtn {
+    background-color: #3498db;
+    border-color: #3498db;
+  }
+  
+  .customRadio input[type="radio"]:checked + .radioBtn::after {
+    content: '';
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: 10px;
+    height: 10px;
+    background-color: white;
+    border-radius: 50%;
+  }
+  
+  .customRadio:hover .radioBtn {
+    border-color: #2980b9;
+  }
+  
+  .customRadio {
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .customRadio input[type="radio"]:focus + .radioBtn {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
+  }
+  
