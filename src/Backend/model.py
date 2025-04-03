@@ -4,7 +4,6 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler, LabelEncoder
 from sklearn.ensemble import RandomForestRegressor
 import pickle
-import app
 import requests
 
 token = "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"
@@ -12,7 +11,6 @@ headers = {
     "Authorization": f"Bearer {token}",
     "Accept": "application/vnd.github.v3+json"
 }
-
 
 def get_all_extensions():
     global headers
@@ -115,13 +113,18 @@ def get_card_data():
 #         with open("src/Backend/pokemon.pickle", "wb") as f:
 #             pickle.dump((model, labelEncoder_card, labelEncoder_ext, labelEncoder_sta, scaler), f)  
 
-with open("src/Backend/pokemon.pickle", "rb") as f:
-    model, labelEncoder_card, labelEncoder_ext, labelEncoder_sta, scaler = pickle.load(f)
+
+
 
 # print(f"Score d'entrainement: {train_score:.3f}")
 # print(f"Score de test: {test_score:.3f}")
 
-def predict_price(card_id, date, ext, state):
+def load_model():
+    with open("src/Backend/pokemon.pickle", "rb") as f:
+        model, labelEncoder_card, labelEncoder_ext, labelEncoder_sta, scaler = pickle.load(f)
+    return model, labelEncoder_card, labelEncoder_ext, labelEncoder_sta, scaler
+
+def predict_price(card_id, date, ext, state, model, labelEncoder_card, labelEncoder_ext, labelEncoder_sta, scaler):
     date = pd.to_datetime(date)
     input_data = pd.DataFrame({
         'card_id': [card_id],
@@ -130,17 +133,18 @@ def predict_price(card_id, date, ext, state):
         'day': [date.day],
         'extension': [ext],
         'state': [state]
-
     })
+
     input_data['card_id'] = labelEncoder_card.transform(input_data['card_id'])
     input_data['extension'] = labelEncoder_ext.transform(input_data['extension'])
     input_data['state'] = labelEncoder_sta.transform(input_data['state'])
     input_scaled = scaler.transform(input_data)
+    
     return model.predict(input_scaled)[0]
 
-future_date = "2024-09-19"
-card_id = "4"
-extension = "xy0"
-state = "normal-good"
-predicted_price = predict_price(card_id, future_date, extension, state)
-print(f"Prix predit pour la carte du set {extension} d'id {card_id} {state} le {future_date}: {predicted_price/100:.2f}$")
+# future_date = "2024-09-19"
+# card_id = "4"
+# extension = "xy0"# 
+# state = "normal-good"
+# predicted_price = predict_price(card_id, future_date, extension, state)
+# print(f"Prix predit pour la carte du set {extension} d'id {card_id} {state} le {future_date}: {predicted_price/100:.2f}$")

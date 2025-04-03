@@ -7,12 +7,15 @@ from pokemontcgsdk import Type
 from pokemontcgsdk import Supertype
 from pokemontcgsdk import Subtype
 from pokemontcgsdk import Rarity
+from model import load_model
+
 import requests
 
 app = Flask(__name__)
 CORS(app)
 
 # model = tf.keras.models.load_model('predict_price.h5')
+
 
 @app.route('/')
 def home():
@@ -57,6 +60,39 @@ def getPokemonByName(pokemonName):
     except:
         erreur = { 'messageErreur': "Erreur detecté"}
         return jsonify(erreur), 500
+
+
+#@app.route('/pokemon/prediction/<id>')
+def predictPokemonCard(id):
+    # Test Route: /pokemon/prediction/123?date=2024-04-03&extension=Base%20Set&state=Near%20Mint
+
+    try:
+        card = Card.find(id)  # Récupère les informations de la carte par ID
+        if not card:
+            return jsonify({"error": "Carte non trouvée"}), 404
+
+        date = request.args.get('date')  # Récupère la date en paramètre
+        ext = request.args.get('extension')  # Récupère l'extension en paramètre
+        state = request.args.get('state')  # Récupère l'état en paramètre
+
+        if not all([date, ext, state]):
+            return jsonify({"error": "Paramètres manquants"}), 400
+
+        # Charger le modèle uniquement lorsque nécessaire
+        model, labelEncoder_card, labelEncoder_ext, labelEncoder_sta, scaler = load_model()
+
+        # Utiliser la fonction de prédiction dans model.py
+        predicted_price = predict_price(id, date, ext, state, model, labelEncoder_card, labelEncoder_ext, labelEncoder_sta, scaler)
+
+        return jsonify({
+            "id": id,
+            "extension": ext,
+            "state": state,
+            "predicted_price": predicted_price
+        })
+
+    except Exception as e:
+        return jsonify({"error": f"Une erreur est survenue: {str(e)}"}), 500
 
 
 @app.route('/pokemon/<id>')
