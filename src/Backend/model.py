@@ -144,7 +144,7 @@ def predict_price(card_id, date, ext, state, model, labelEncoder_card, labelEnco
 
 # future_date = "2024-09-19"
 # card_id = "4"
-# extension = "xy0"# 
+# extension = "xy0"
 # state = "normal-good"
 # predicted_price = predict_price(card_id, future_date, extension, state)
 # print(f"Prix predit pour la carte du set {extension} d'id {card_id} {state} le {future_date}: {predicted_price/100:.2f}$")
