@@ -13,11 +13,11 @@ function Prediction(props) {
     const [chargement, updateChargement] = useState(true);
     const [chargementPredict, updateChargementPredict] = useState(true);
     const [pokemonData, updatePokemonData] = useState([]);
-    const [selectedOption, setSelectedOption] = useState(null);
+    const [anneeChoisir, setAnneeData] = useState("2026");
     const anneeTableau = ["2022","2023","2024","2025","2026","2027"];
 
-    const handleChange = (e) => {
-      setSelectedOption(e.target.value);
+    const changerAnnee = event => {
+      setAnneeData(event.target.value);
     };
 
     function fermePage() {
@@ -106,27 +106,29 @@ function Prediction(props) {
                                         <div className={styles.futurePrix}>
                                             <div className={styles.radioContainer}>
                                                 {anneeTableau.map((val, index) => (
-                                                    <label key={index} className={styles.customRadio}>
-                                                        <input type="radio" name="anneeChoix" value={val} checked={selectedOption === val} onChange={handleChange} />
+                                                    <label key={index} className={`${styles.customRadio} ${anneeChoisir === val ? styles.selected : ''}`}>
+                                                        <input type="radio" name="anneeChoix" value={val} checked={anneeChoisir === val} onChange={changerAnnee} />
                                                         <span className={styles.radioBtn}></span>
                                                         {val}
                                                     </label>
                                                 ))}
                                             </div>
                                             
+                                            <div className={styles.predictionPrixContainer}>
                                             { chargementPredict ? (
-                                                <div className={styles.chargementPredictContainer}>
-                                                    <Chargement />
-
-                                                    <p ref={predictTextRef} className={styles.predictTextInfo}>
-
-                                                    </p>
-                                                </div>
+                                                <Chargement />
                                             ) : (
-                                                <div className={styles.test}>
-
+                                                <div className={styles.predictionInfo}>
+                                                    <p className={styles.prix}>Prix actuelle: {Math.floor(Math.random() * 100) +2}€</p>
+                                                    <p className={styles.prix}>Prix prédit en <span className={styles.span}>{anneeChoisir}</span>: {Math.floor(Math.random() * 100) +2}€</p>
                                                 </div>
                                             )}
+
+                                                <div className={styles.graphesContainer}>
+
+
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

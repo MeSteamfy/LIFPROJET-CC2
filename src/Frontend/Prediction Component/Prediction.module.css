@@ -105,6 +105,7 @@
 .carteInfo .infoConteneur {
     flex: 1;
     display: flex;
+    gap: 2em;
     justify-content: flex-start;
     align-items: flex-start;
     flex-direction: column;
@@ -119,8 +120,8 @@
     justify-content: flex-start;
     align-items: flex-start;
     flex-direction: column;
-    height: 100%;
     margin: 0;
+    width: 100%;
 }
 
 .headerConteneur .rarity {
@@ -161,10 +162,39 @@
     flex: 1;
 }
 
-.futurePrix .test {
-    background-color: red;
-    width: 100%;
+.futurePrix .predictionPrixContainer {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 1em;
+    margin-top: 2em;
+}
+
+.predictionPrixContainer .predictionInfo {
+    width: 60%;
     height: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+    
+}
+
+.predictionInfo .prix {
+    font-weight: bold;
+    color: white;
+    font-size: 1.5em;
+    margin: 0;
+}
+
+.prix .span {
+    color: rgb(233, 146, 32);
+}
+
+.predictionPrixContainer .graphesContainer {
+    width: 400px;
+    height: 100%;
+    background-color: rgb(36, 49, 58);
 }
 
 .type {
@@ -192,15 +222,17 @@
 
 .radioContainer {
     display: flex;
-    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
     gap: 15px;
-  }
+}
 
-  .customRadio input[type="radio"] {
+.customRadio input[type="radio"] {
     display: none;
-  }
-  
-  .customRadio .radioBtn {
+}
+
+.customRadio .radioBtn {
     width: 20px;
     height: 20px;
     border-radius: 50%;
@@ -209,14 +241,14 @@
     position: relative;
     margin-right: 10px;
     transition: background-color 0.3s ease, border-color 0.3s ease;
-  }
-  
-  .customRadio input[type="radio"]:checked + .radioBtn {
+}
+
+.customRadio input[type="radio"]:checked + .radioBtn {
     background-color: #3498db;
     border-color: #3498db;
-  }
-  
-  .customRadio input[type="radio"]:checked + .radioBtn::after {
+}
+
+.customRadio input[type="radio"]:checked + .radioBtn::after {
     content: '';
     position: absolute;
     top: 5px;
@@ -225,21 +257,23 @@
     height: 10px;
     background-color: white;
     border-radius: 50%;
-  }
-  
-  .customRadio:hover .radioBtn {
+}
+
+.customRadio:hover .radioBtn {
     border-color: #2980b9;
-  }
-  
-  .customRadio {
+}
+
+.customRadio {
     font-size: 16px;
     display: flex;
     align-items: center;
     cursor: pointer;
-  }
-  
-  .customRadio input[type="radio"]:focus + .radioBtn {
+    color: white;
+    font-weight: bold;
+}
+
+.customRadio input[type="radio"]:focus + .radioBtn {
     outline: none;
     box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
-  }
+}
   
