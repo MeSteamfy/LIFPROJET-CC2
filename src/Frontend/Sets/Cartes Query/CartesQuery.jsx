@@ -58,7 +58,7 @@ export default function CartesQuery() {
 
     useEffect(() => {
         function appuieSurEntree(event) {
-            if (event.key === "Enter") rechercheAutrePokemon();
+            if (event.key === "Enter" && inputValeurRef.current.value) rechercheAutrePokemon();
         }
     
         document.addEventListener('keydown', appuieSurEntree);

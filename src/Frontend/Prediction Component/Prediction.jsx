@@ -6,19 +6,15 @@ import Chargement from "../Chargement/Chargement";
 
 function Prediction(props) {
     const conteneurRef = useRef(null);
-    const predictTextRef = useRef(null);
+    const dateRef = useRef(null);
 
-    const {predictionOn, updatePrediction, pokemonSelect} = useContext(DataContext);
+    const {predictionOn, updatePrediction} = useContext(DataContext);
 
     const [chargement, updateChargement] = useState(true);
-    const [chargementPredict, updateChargementPredict] = useState(true);
+    const [chargementPredict, updateChargementPredict] = useState(false);
     const [pokemonData, updatePokemonData] = useState([]);
-    const [anneeChoisir, setAnneeData] = useState("2026");
-    const anneeTableau = ["2022","2023","2024","2025","2026","2027"];
-
-    const changerAnnee = event => {
-      setAnneeData(event.target.value);
-    };
+    const [erreurDetecte, updateErreur] = useState(false);
+    const [anneeChoisi, updateAnneeChoisi] = useState("");
 
     function fermePage() {
         conteneurRef.current.classList.replace(styles.apparait, styles.disparait);
@@ -26,6 +22,21 @@ function Prediction(props) {
         setTimeout(() => {
             updatePrediction(false);
         }, 300);
+    }
+
+    function checkDateFormat() {
+        updateErreur(false);
+        updateAnneeChoisi("");
+        updateChargementPredict(true);
+        
+        if (dateRef.current && /^\d{4}-\d{2}-\d{2}$/.test(dateRef.current.value)) {
+            // appel api
+            console.log(dateRef.current.value);
+            updateAnneeChoisi(dateRef.current.value);
+        }
+
+        else updateErreur(true);
+        updateChargementPredict(false);
     }
 
     useEffect(() => {
@@ -60,17 +71,6 @@ function Prediction(props) {
         return () => document.removeEventListener("click", cliqueEnDehors);
     }, [])
 
-    useEffect(() => {
-        const testAPICall = () => {
-            // ici on met l'appel axios avec try catch et tout le tralala
-
-            setTimeout(() => {
-                updateChargementPredict(false);
-            }, 5000)
-        }
-        testAPICall()
-    }, []);
-
     return (
         <>
             { predictionOn && (
@@ -104,25 +104,23 @@ function Prediction(props) {
                                         </div>
 
                                         <div className={styles.futurePrix}>
-                                            <div className={styles.radioContainer}>
-                                                {anneeTableau.map((val, index) => (
-                                                    <label key={index} className={`${styles.customRadio} ${anneeChoisir === val ? styles.selected : ''}`}>
-                                                        <input type="radio" name="anneeChoix" value={val} checked={anneeChoisir === val} onChange={changerAnnee} />
-                                                        <span className={styles.radioBtn}></span>
-                                                        {val}
-                                                    </label>
-                                                ))}
+                                            <div className={styles.testContainer}>
+                                                <input ref={dateRef} className={styles.input} type="text" placeholder="2022-01-01" onKeyDown={(e) => e.key === "Enter" ? checkDateFormat() : ''} />
+                                                {erreurDetecte && (
+                                                    <p className={styles.erreur}>La date doit être du type "YYYY-MM-DD"</p>
+                                                )}
                                             </div>
                                             
                                             <div className={styles.predictionPrixContainer}>
-                                            { chargementPredict ? (
-                                                <Chargement />
-                                            ) : (
                                                 <div className={styles.predictionInfo}>
-                                                    <p className={styles.prix}>Prix actuelle: {Math.floor(Math.random() * 100) +2}€</p>
-                                                    <p className={styles.prix}>Prix prédit en <span className={styles.span}>{anneeChoisir}</span>: {Math.floor(Math.random() * 100) +2}€</p>
+                                                <p className={styles.prix}>Prix actuelle: ${pokemonData.marketPrix.prices.holofoil?.market || `25.${Math.floor(Math.random() * 100).toString().padStart(2, '0')}`}</p>
+
+                                                    { chargementPredict ? <Chargement /> : 
+                                                        ( 
+                                                            anneeChoisi && <p className={styles.prix}>Prix prédit pour {new Date(dateRef.current.value).getFullYear()}</p> 
+                                                        )
+                                                    }
                                                 </div>
-                                            )}
 
                                                 <div className={styles.graphesContainer}>
 

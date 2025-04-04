@@ -108,6 +108,7 @@ def getPokemon(id):
             'type': card.types,
             'images': card.images,
             'nationalPokedexNumbers' : card.nationalPokedexNumbers,
+            'marketPrix': card.tcgplayer
         }
         return jsonify(cardData)
 

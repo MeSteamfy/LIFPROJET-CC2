@@ -162,6 +162,30 @@
     flex: 1;
 }
 
+.futurePrix .testContainer {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    width: 100%;
+    color: black;
+}
+
+.testContainer .erreur {
+    color: rgb(240, 94, 94);
+    font-weight: 700;
+    margin-bottom: -1em;
+}
+
+.testContainer .input {
+    background-color: rgb(38, 71, 99);
+    color: white;
+    border: none;
+    outline: none;
+    font-size: 1.5em;
+    padding: 10px 20px;
+    border-radius: 10px;
+}
+
 .futurePrix .predictionPrixContainer {
     display: flex;
     justify-content: space-evenly;
@@ -170,6 +194,8 @@
     margin-top: 2em;
 }
 
+
+
 .predictionPrixContainer .predictionInfo {
     width: 60%;
     height: 100%;
@@ -177,7 +203,7 @@
     justify-content: flex-start;
     align-items: flex-start;
     flex-direction: column;
-    
+    gap: 20px;
 }
 
 .predictionInfo .prix {
@@ -219,61 +245,3 @@
     font-size: 20px;
     font-style: oblique 20deg;   
 }
-
-.radioContainer {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    width: 100%;
-    gap: 15px;
-}
-
-.customRadio input[type="radio"] {
-    display: none;
-}
-
-.customRadio .radioBtn {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    border: 2px solid #3498db;
-    display: inline-block;
-    position: relative;
-    margin-right: 10px;
-    transition: background-color 0.3s ease, border-color 0.3s ease;
-}
-
-.customRadio input[type="radio"]:checked + .radioBtn {
-    background-color: #3498db;
-    border-color: #3498db;
-}
-
-.customRadio input[type="radio"]:checked + .radioBtn::after {
-    content: '';
-    position: absolute;
-    top: 5px;
-    left: 5px;
-    width: 10px;
-    height: 10px;
-    background-color: white;
-    border-radius: 50%;
-}
-
-.customRadio:hover .radioBtn {
-    border-color: #2980b9;
-}
-
-.customRadio {
-    font-size: 16px;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    color: white;
-    font-weight: bold;
-}
-
-.customRadio input[type="radio"]:focus + .radioBtn {
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
-}
-  
