@@ -5,6 +5,7 @@ from sklearn.preprocessing import StandardScaler, LabelEncoder
 from sklearn.ensemble import RandomForestRegressor
 import pickle
 import requests
+import os
 
 token = "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"
 headers = {
@@ -120,11 +121,13 @@ def get_card_data():
 # print(f"Score de test: {test_score:.3f}")
 
 def load_model():
-    with open("src/Backend/pokemon.pickle", "rb") as f:
+    model_path = os.path.join(os.path.dirname(__file__), 'pokemon.pickle')
+    with open(model_path, "rb") as f:
         model, labelEncoder_card, labelEncoder_ext, labelEncoder_sta, scaler = pickle.load(f)
     return model, labelEncoder_card, labelEncoder_ext, labelEncoder_sta, scaler
 
 def predict_price(card_id, date, ext, state, model, labelEncoder_card, labelEncoder_ext, labelEncoder_sta, scaler):
+    print("Préparation des données...")  # 👈 Ajoute ça
     date = pd.to_datetime(date)
     input_data = pd.DataFrame({
         'card_id': [card_id],
@@ -135,12 +138,20 @@ def predict_price(card_id, date, ext, state, model, labelEncoder_card, labelEnco
         'state': [state]
     })
 
-    input_data['card_id'] = labelEncoder_card.transform(input_data['card_id'])
+    print("Encodage...")
+    input_data['card_id'] = labelEncoder_card.transform(input_data['card_id'])  # ❌ Peut planter ici
     input_data['extension'] = labelEncoder_ext.transform(input_data['extension'])
     input_data['state'] = labelEncoder_sta.transform(input_data['state'])
+
+    print("Scaling...")
     input_scaled = scaler.transform(input_data)
-    
-    return model.predict(input_scaled)[0]
+
+    print("Prédiction...")
+    result = model.predict(input_scaled)[0]
+
+    print("Prédiction terminée:", result)
+    return result
+
 
 # future_date = "2024-09-19"
 # card_id = "4"

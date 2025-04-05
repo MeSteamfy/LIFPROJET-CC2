@@ -16,6 +16,8 @@ function Prediction(props) {
     const [erreurDetecte, updateErreur] = useState(false);
     const [anneeChoisi, updateAnneeChoisi] = useState("");
 
+    const [predictionData, setPredictionData] = useState([]);
+
     function fermePage() {
         conteneurRef.current.classList.replace(styles.apparait, styles.disparait);
 
@@ -24,18 +26,43 @@ function Prediction(props) {
         }, 300);
     }
 
-    function checkDateFormat() {
+    const checkDateFormat = async () => {
         updateErreur(false);
         updateAnneeChoisi("");
+        setPredictionData([]);
         updateChargementPredict(true);
         
         if (dateRef.current && /^\d{4}-\d{2}-\d{2}$/.test(dateRef.current.value)) {
+            const carteInfoTab = pokemonData.id.split('-');
+            const carteID = carteInfoTab[1];
+            const setID = carteInfoTab[0];
+            console.log(carteID, setID)
+
+            try {
+                const backendResponse = await axios.get("http://localhost:5000/pokemon/prediction", {
+                    params: {
+                      id: carteID,
+                      date: dateRef.current.value,
+                      extension: setID,
+                      state: "normal-good"
+                    }
+                  },
+                );
+                setPredictionData(backendResponse.data);
+                console.log(backendResponse.data);
+            }
+
+            catch(error) {
+                console.error(error);
+            }
+
             // appel api
             console.log(dateRef.current.value);
             updateAnneeChoisi(dateRef.current.value);
         }
 
         else updateErreur(true);
+
         updateChargementPredict(false);
     }
 
@@ -44,7 +71,8 @@ function Prediction(props) {
             const getPokemonInfo = async () => {
                 try {
                     const backendReponse = await axios.get(`http://localhost:5000/pokemon/${props.pokemonID}`);
-                    updatePokemonData(backendReponse.data)
+                    updatePokemonData(backendReponse.data);                
+                    console.log(backendReponse.data)    
                 }
         
                 catch(error) {
@@ -113,11 +141,11 @@ function Prediction(props) {
                                             
                                             <div className={styles.predictionPrixContainer}>
                                                 <div className={styles.predictionInfo}>
-                                                <p className={styles.prix}>Prix actuelle: ${pokemonData.marketPrix.prices.holofoil?.market || `25.${Math.floor(Math.random() * 100).toString().padStart(2, '0')}`}</p>
+                                                <p className={styles.prix}>Prix actuelle: ${pokemonData.marketPrix.prices.holofoil?.market || pokemonData.marketPrix.prices.normal.market}</p>
 
                                                     { chargementPredict ? <Chargement /> : 
                                                         ( 
-                                                            anneeChoisi && <p className={styles.prix}>Prix prédit pour {new Date(dateRef.current.value).getFullYear()}</p> 
+                                                            anneeChoisi && <p className={styles.prix}>Prix prédit pour {new Date(dateRef.current.value).getFullYear()}: ${predictionData.predicted_price?.toFixed(2) || "Erreur lors de la récupération des données"}</p> 
                                                         )
                                                     }
                                                 </div>

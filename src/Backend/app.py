@@ -7,7 +7,8 @@ from pokemontcgsdk import Type
 from pokemontcgsdk import Supertype
 from pokemontcgsdk import Subtype
 from pokemontcgsdk import Rarity
-from model import load_model
+from model import load_model, predict_price
+import traceback
 
 import requests
 
@@ -62,37 +63,32 @@ def getPokemonByName(pokemonName):
         return jsonify(erreur), 500
 
 
-@app.route('/pokemon/prediction/<id>')
-def predictPokemonCard(id):
-    # Test Route: http://localhost:5000/pokemon/prediction/4?date=%222024-09-19%22&extension=%22xy0%22&state=%22normal-good%22
-
+@app.route('/pokemon/prediction')
+def predictPokemonCard():
     try:
-        ext = request.args.get('extension') 
-        newID = f"{ext}-{id}"
-
-        card = Card.find(newID)
-        if not card:
-            return jsonify({"error": "Carte non trouvée"}), 404
-
+        card_id = request.args.get('id')
+        ext = request.args.get('extension')
         date = request.args.get('date')
-        
         state = request.args.get('state')
 
-        if not all([date, ext, state]):
+        if not all([card_id, date, ext, state]):
             return jsonify({"error": "Paramètres manquants"}), 400
 
         model, labelEncoder_card, labelEncoder_ext, labelEncoder_sta, scaler = load_model()
 
-        predicted_price = predict_price(id, date, ext, state, model, labelEncoder_card, labelEncoder_ext, labelEncoder_sta, scaler)
+        predicted_price = predict_price(card_id, date, ext, state, model, labelEncoder_card, labelEncoder_ext, labelEncoder_sta, scaler)
 
         return jsonify({
-            "cardID": newID,
+            "cardID": card_id,
             "predicted_price": predicted_price,
             "date": date
         })
 
     except Exception as e:
-        return jsonify({"error": f"Une erreur est survenue: {str(e)}"}), 500
+        print("Erreur dans /pokemon/prediction :", e)
+        error_message = e.decode("utf-8") if isinstance(e, bytes) else str(e)
+        return jsonify({"error": f"Une erreur est survenue: {error_message}"}), 500
+
 
 
 @app.route('/pokemon/<id>')
@@ -125,6 +121,7 @@ def getPokemon(id):
 # c'est comme event.preventDefault() et c'est nous qui gérons l'erreur ici
 @app.errorhandler(500)
 def internal_server_error(e):
+    traceback.print_exc()
     return jsonify({
         'messageErreur': "Internal Server Error",
         'details': str(e)
