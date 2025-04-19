@@ -7,7 +7,7 @@ import pickle
 import requests
 import os
 import plotly.express as px
-token = "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"
+token = "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"
 headers = {
     "Authorization": f"Bearer {token}",
     "Accept": "application/vnd.github.v3+json"
