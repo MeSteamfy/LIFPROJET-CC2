@@ -3,11 +3,12 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler, LabelEncoder
 from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 import pickle
 import requests
 import os
 import plotly.express as px
-token = "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"
+token = "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"
 headers = {
     "Authorization": f"Bearer {token}",
     "Accept": "application/vnd.github.v3+json"
@@ -77,7 +78,6 @@ def get_card_data():
     df['day'] = df['date'].dt.day
     return df
 
-# df = get_card_data()
 def create_graphe(df):
 
     output_folder = os.path.abspath("./src/assets/graphes")
@@ -104,46 +104,64 @@ def create_graphe(df):
         fig.write_html(filepath)
         print(f"Graphe sauvegardé : {filepath}")
 
-# print(df)
-# predict = "price"
+def train_model(X, y, save_path="src/Backend/pokemon.pickle", n_iter=20):
+    r2_scores = []
+    mae_scores = []
 
-# X = df[['card_id', 'year', 'month', 'day', 'extension', 'state']]
-# y = df[predict]
+    best_model = None
+    best_r2 = -np.inf
+    best_scaler = None
+    best_random_state = None
 
-# labelEncoder_card = LabelEncoder()
-# labelEncoder_ext = LabelEncoder()
-# labelEncoder_sta = LabelEncoder()
-# X.loc[:, 'card_id'] = labelEncoder_card.fit_transform(X['card_id'])
-# X.loc[:, 'extension'] = labelEncoder_ext.fit_transform(X['extension'])
-# X.loc[:, 'state'] = labelEncoder_sta.fit_transform(X['state'])
+    for random_state in range(n_iter):
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=random_state)
+        scaler = StandardScaler()
+        X_train_scaled = scaler.fit_transform(X_train)
+        X_test_scaled = scaler.transform(X_test)
 
-# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1)
-# scaler = StandardScaler()
-# X_train_scaled = scaler.fit_transform(X_train)
-# X_test_scaled = scaler.transform(X_test)
+        model = RandomForestRegressor(n_estimators=100, max_depth=20, random_state=random_state)
+        model.fit(X_train_scaled, y_train)
 
-# best = 0
-# for _ in range (20):
-#     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=_)
-#     scaler = StandardScaler()
-#     X_train_scaled = scaler.fit_transform(X_train)
-#     X_test_scaled = scaler.transform(X_test)
-#     model = RandomForestRegressor(n_estimators=100, max_depth=20)
-#     model.fit(X_train_scaled, y_train)
+        y_pred = model.predict(X_test_scaled)
 
-#     train_score = model.score(X_train_scaled, y_train)
-#     test_score = model.score(X_test_scaled, y_test)
-#     print(test_score)
-#     if test_score > best :
-#         best = test_score
-#         with open("src/Backend/pokemon.pickle", "wb") as f:
-#             pickle.dump((model, labelEncoder_card, labelEncoder_ext, labelEncoder_sta, scaler), f)  
+        r2 = r2_score(y_test, y_pred)
+        mae = mean_absolute_error(y_test, y_pred)
 
+        r2_scores.append(r2)
+        mae_scores.append(mae)
 
+        if r2 > best_r2:
+            best_r2 = r2
+            best_model = model
+            best_scaler = scaler
+            best_random_state = random_state
 
+            with open(save_path, "wb") as f:
+                pickle.dump((model, labelEncoder_card, labelEncoder_ext, labelEncoder_sta, scaler), f)
 
-# print(f"Score d'entrainement: {train_score:.3f}")
-# print(f"Score de test: {test_score:.3f}")
+    print("\n--- Resultats sur les", n_iter, "iterations ---")
+    print(f"R² moyen      : {np.mean(r2_scores):.4f} (±{np.std(r2_scores):.4f})")
+    print(f"MAE moyen     : {np.mean(mae_scores):.4f}")                                 #en cents
+    print(f"Meilleur R²   : {best_r2:.4f} (random_state={best_random_state})")
+
+    return best_model
+
+#df = get_card_data()
+#print(df)
+
+#predict = "price"
+
+#X = df[['card_id', 'year', 'month', 'day', 'extension', 'state']]
+#y = df[predict]
+#labelEncoder_card = LabelEncoder()
+#labelEncoder_ext = LabelEncoder()
+#labelEncoder_sta = LabelEncoder()
+
+#X.loc[:, 'card_id'] = labelEncoder_card.fit_transform(X['card_id'])
+#X.loc[:, 'extension'] = labelEncoder_ext.fit_transform(X['extension'])
+#X.loc[:, 'state'] = labelEncoder_sta.fit_transform(X['state'])
+#model = train_model(X, y, save_path="src/Backend/pokemon.pickle", n_iter=20)
+
 
 def load_model():
     model_path = os.path.join(os.path.dirname(__file__), 'pokemon.pickle')
