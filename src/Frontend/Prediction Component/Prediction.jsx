@@ -36,7 +36,6 @@ function Prediction(props) {
             const carteInfoTab = pokemonData.id.split('-');
             const carteID = carteInfoTab[1];
             const setID = carteInfoTab[0];
-            console.log(carteID, setID)
 
             try {
                 const backendResponse = await axios.get("http://localhost:5000/pokemon/prediction", {
@@ -49,15 +48,12 @@ function Prediction(props) {
                   },
                 );
                 setPredictionData(backendResponse.data);
-                console.log(backendResponse.data);
             }
 
             catch(error) {
                 console.error(error);
             }
 
-            // appel api
-            console.log(dateRef.current.value);
             updateAnneeChoisi(dateRef.current.value);
         }
 
@@ -141,7 +137,7 @@ function Prediction(props) {
                                             
                                             <div className={styles.predictionPrixContainer}>
                                                 <div className={styles.predictionInfo}>
-                                                <p className={styles.prix}>Prix actuelle: ${pokemonData.marketPrix.prices.holofoil?.market || pokemonData.marketPrix.prices.normal.market}</p>
+                                                <p className={styles.prix}>Prix actuelle: ${pokemonData.marketPrix?.prices.holofoil?.market || pokemonData.marketPrix?.prices.normal.market || ' Trop récente'}</p>
 
                                                     { chargementPredict ? <Chargement /> : 
                                                         ( 

@@ -20,7 +20,7 @@ npm install # Installe automatiquement toutes les dépendances de notre projet.
 ### Backend (Python)
 Le backend utilise Flask ainsi que d'autres bibliothèques Python pour gérer les requêtes, manipuler les données et l'IA. Pour installer les dépendances Python, exécutez la commande suivante:
 ```bash
-pip install flask, flask_cors, pokemontcgsdk, scikit-learn, numpy, pandas, streamlit
+pip install flask, flask_cors, pokemontcgsdk, scikit-learn, numpy, pandas, plotly
 ```
 
 Sachant que notre IA a été entrainé pendant de nombreux jours, il est important que vous ayiez les données les plus récentes. Pour cela, vous pouvez télécharger la version la plus récente de notre IA [ici](https://www.mediafire.com/file/w0hr7lxc5dlmt9b/pokemon.pickle/file) ou lancer la commande suivante pour créer l'IA:
