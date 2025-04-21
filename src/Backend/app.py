@@ -80,7 +80,7 @@ def predictPokemonCard():
 
         return jsonify({
             "cardID": card_id,
-            "predicted_price": predicted_price/10,
+            "predicted_price": predicted_price/100,  #on divise par 100 pour avoir le resultat en dollars
             "date": date
         })
 

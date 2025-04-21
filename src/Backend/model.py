@@ -146,6 +146,8 @@ def train_model(X, y, save_path="src/Backend/pokemon.pickle", n_iter=20):
 
     return best_model
 
+# DECOMMENTER ICI POUR AVOIR LE MODELE OU LE TELECHARGER (README)
+
 #df = get_card_data()
 #print(df)
 
