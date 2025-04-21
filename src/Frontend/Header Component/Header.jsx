@@ -12,10 +12,6 @@ function Header() {
         <Link className='link' to="/sets"> 
           <p className={styles.info}>Sets</p>
         </Link>
-        
-        <Link className='link' to="/graphes"> 
-          <p className={styles.info}>Graphes</p>
-        </Link>
       </div>
     </nav>
   );
