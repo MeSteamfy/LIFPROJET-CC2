@@ -7,7 +7,7 @@ import pickle
 import requests
 import os
 import plotly.express as px
-token = "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"
+token = "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"
 headers = {
     "Authorization": f"Bearer {token}",
     "Accept": "application/vnd.github.v3+json"
@@ -77,33 +77,32 @@ def get_card_data():
     df['day'] = df['date'].dt.day
     return df
 
-df = get_card_data()
+# df = get_card_data()
+def create_graphe(df):
 
-output_folder = os.path.abspath("./src/assets/graphes")
-os.makedirs(output_folder, exist_ok=True)
+    output_folder = os.path.abspath("./src/assets/graphes")
+    os.makedirs(output_folder, exist_ok=True)
 
-# Regroupement par extension et carte
-grouped = df.groupby(['extension', 'card_id'])
+    grouped = df.groupby(['extension', 'card_id'])
 
-for (extension, card_id), group in grouped:
-    print(f"Carte : {card_id} (Extension : {extension}) - États trouvés : {group['state'].unique()}")
+    for (extension, card_id), group in grouped:
+        print(f"Carte : {card_id} (Extension : {extension}) - États trouvés : {group['state'].unique()}")
 
-    # Créer un dossier pour chaque extension si nécessaire
-    extension_folder = os.path.join(output_folder, extension)
-    os.makedirs(extension_folder, exist_ok=True)
+        extension_folder = os.path.join(output_folder, extension)
+        os.makedirs(extension_folder, exist_ok=True)
 
-    fig = px.line(group.sort_values('date'),
-                  x='date', y='price',
-                  color='state',
-                  title=f"Évolution du prix - {card_id} ({extension})",
-                  labels={'date': 'Date', 'price': 'Prix (€)', 'state': 'État'})
+        fig = px.line(group.sort_values('date'),
+                    x='date', y=group['price'] / 100,
+                    color='state',
+                    title=f"Évolution du prix - {card_id} ({extension})",
+                    labels={'date': 'Date', 'y': 'Prix ($)', 'state': 'État'})
 
-    safe_card_id = str(card_id).replace("/", "_").replace("\\", "_")
-    filename = f"{safe_card_id}.html"
-    filepath = os.path.join(extension_folder, filename)
+        safe_card_id = str(card_id).replace("/", "_").replace("\\", "_")
+        filename = f"{safe_card_id}.html"
+        filepath = os.path.join(extension_folder, filename)
 
-    fig.write_html(filepath)
-    print(f"Graphe sauvegardé : {filepath}")
+        fig.write_html(filepath)
+        print(f"Graphe sauvegardé : {filepath}")
 
 # print(df)
 # predict = "price"

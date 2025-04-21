@@ -24,3 +24,4 @@ dist-ssr
 *.sw?
 src/Backend/pokemon.pickle
 *.pickle
+src/assets/graphes
