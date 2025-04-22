@@ -123,7 +123,7 @@ function Prediction(props) {
                                             </div>
 
                                             <p className={styles.rarity}>
-                                                Rareté: {pokemonData.rarity}
+                                                Rareté: {pokemonData.rarity || "Common"}
                                             </p>
                                         </div>
 
