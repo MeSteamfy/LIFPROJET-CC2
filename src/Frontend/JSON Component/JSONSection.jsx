@@ -5,6 +5,8 @@ function JSONSection() {
     const jsonBox = useRef(null);
 
     useEffect(() => {
+        // La fonction va utiliser l'API IntersectionObserver pour faire, lors d'un certain pourcentage de visibilité
+        // d'un élément sur l'écran, lui appliquer une fonction, ici on le donne la visibilité.
         const observer = new IntersectionObserver(
             entries => {
                 entries.forEach(entry => {
