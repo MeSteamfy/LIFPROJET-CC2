@@ -34,3 +34,8 @@ Pour lancer le projet, lancez la commande suivante qui lancera le Frontend et le
 ```bash
 npm start
 ```
+
+## Auteurs
+MeAllister / MeSteamfy: Hervé
+Blurheet: Tony
+Falecu12: Faïk
