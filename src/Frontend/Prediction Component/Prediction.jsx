@@ -31,7 +31,8 @@ function Prediction(props) {
         updateAnneeChoisi("");
         setPredictionData([]);
         updateChargementPredict(true);
-        
+
+        // si l'input de la date suit le motif YYYY-MM-DD, alors on fait l'appel à l'api, sinon on affiche une erreur
         if (dateRef.current && /^\d{4}-\d{2}-\d{2}$/.test(dateRef.current.value)) {
             const carteInfoTab = pokemonData.id.split('-');
             const carteID = carteInfoTab[1];
@@ -63,6 +64,8 @@ function Prediction(props) {
     }
 
     useEffect(() => {
+        // Si un id de Pokémon a été donné, alors on fait les requetes, sinon on ferme la page pour suivre
+        // une logic "fail-first"
         if (props.pokemonID) {
             const getPokemonInfo = async () => {
                 try {
