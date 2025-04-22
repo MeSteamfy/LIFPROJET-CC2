@@ -37,5 +37,7 @@ npm start
 
 ## Auteurs
 MeAllister / MeSteamfy: Hervé
+
 Blurheet: Tony
+
 Falecu12: Faïk
