@@ -18,6 +18,8 @@ npm install # Installe automatiquement toutes les dépendances de notre projet.
 ```
 
 ### Backend (Python)
+Tout d'abord, il vous faudra une clé API que vous trouverez [sur le site officiel de Pokémon TCG Developers](https://pokemontcg.io). Vous devrez ensuite exporter votre clé dans votre programme ou dans le projet.
+
 Le backend utilise Flask ainsi que d'autres bibliothèques Python pour gérer les requêtes, manipuler les données et l'IA. Pour installer les dépendances Python, exécutez la commande suivante:
 ```bash
 pip install flask, flask_cors, pokemontcgsdk, scikit-learn, numpy, pandas, plotly
